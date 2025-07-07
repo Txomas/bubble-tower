@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f4622b0faa4a63a935f5b90541badc, type: 3}
+  m_Name: Level_00
+  m_EditorClassIdentifier: 
+  _coloredCells:
+    _serializedList:
+    - Key: {x: 7, y: 0}
+      Value: 1
+    - Key: {x: 6, y: 0}
+      Value: 1
+    - Key: {x: 5, y: 0}
+      Value: 1
+    - Key: {x: 4, y: 0}
+      Value: 1
+    - Key: {x: 3, y: 0}
+      Value: 1
+    - Key: {x: 2, y: 0}
+      Value: 1
+    - Key: {x: 2, y: 1}
+      Value: 1
+    - Key: {x: 3, y: 1}
+      Value: 1
+    - Key: {x: 4, y: 1}
+      Value: 1
+    - Key: {x: 5, y: 1}
+      Value: 1
+    - Key: {x: 6, y: 1}
+      Value: 1
+    - Key: {x: 7, y: 1}
+      Value: 1
+    - Key: {x: 7, y: 2}
+      Value: 1
+    - Key: {x: 6, y: 2}
+      Value: 1
+    - Key: {x: 6, y: 3}
+      Value: 1
+    - Key: {x: 5, y: 3}
+      Value: 1
+    - Key: {x: 4, y: 3}
+      Value: 1
+    - Key: {x: 4, y: 2}
+      Value: 1
+    - Key: {x: 3, y: 3}
+      Value: 1
+    - Key: {x: 3, y: 2}
+      Value: 1
+    - Key: {x: 2, y: 2}
+      Value: 1
+    - Key: {x: 5, y: 2}
+      Value: 1

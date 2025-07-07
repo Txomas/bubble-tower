@@ -13,10 +13,7 @@ namespace Zenject.Helpers
 
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
+            get => _isEnabled;
             set
             {
                 _isEnabled = value;
@@ -95,6 +92,12 @@ namespace Zenject.Helpers
         protected void Subscribe<TSignal>(Action<TSignal> action)
         {
             _signalBus.Subscribe(action);
+            _subscriptions.Add((typeof(TSignal), action));
+        }
+        
+        protected void Subscribe<TSignal>(Action action)
+        {
+            _signalBus.Subscribe<TSignal>(action);
             _subscriptions.Add((typeof(TSignal), action));
         }
     

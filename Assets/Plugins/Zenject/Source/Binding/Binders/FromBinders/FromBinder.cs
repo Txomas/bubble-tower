@@ -524,7 +524,7 @@ namespace Zenject
                 (container, concreteType) => new MethodMultipleProviderUntyped(ctx =>
                     {
                         Assert.That(ctx.ObjectType.DerivesFromOrEqual<MonoBehaviour>(),
-                            "Cannot use FromComponentInChildren to inject data into non monobehaviours!");
+                            $"Cannot use FromComponentInChildren to inject {concreteType} into non monobehaviours: {ctx.ObjectType}!");
 
                         Assert.IsNotNull(ctx.ObjectInstance);
 
