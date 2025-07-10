@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using Zenject;
 using Zenject.Helpers;
@@ -8,38 +9,44 @@ namespace Game.Input
     public class InputController : BaseController
     {
         [Inject] private InputSystemActions _actions;
+        private InputSystemActions.GameplayActions _gameplayActions;
         
-        private Vector2 _lastScreenPos = Vector2.negativeInfinity;
-
         protected override void OnInitialized()
         {
-            _actions.Gameplay.Position.performed += OnPositionChanged;
+            _gameplayActions = _actions.Gameplay;
+            
+            _gameplayActions.Scroll.performed += ctx =>
+            {
+                var delta = ctx.ReadValue<Vector2>().y;
+                FireSignal(new ScrollSignal(delta));
+            };
+            _gameplayActions.Next.performed += _ =>
+            {
+                FireSignal(new NextClickedSignal());
+            };
+            _gameplayActions.Previous.performed += _ =>
+            {
+                FireSignal(new PreviousClickedSignal());
+            };
+            
             _actions.Enable();
         }
 
-        protected override void OnDisposed()
+        protected override void OnTick()
         {
-            _actions.Gameplay.Position.performed -= OnPositionChanged;
-            _actions.Disable();
-        }
-
-        private void OnPositionChanged(InputAction.CallbackContext ctx)
-        {
-            if (_actions.Gameplay.Click.phase is not InputActionPhase.Performed)
+            if (_gameplayActions.Move.phase is InputActionPhase.Performed)
             {
-                return;
+                var direction = _gameplayActions.Move.ReadValue<Vector2>();
+                FireSignal(new MoveSignal(direction));
             }
             
-            var screenPos = _actions.Gameplay.Position.ReadValue<Vector2>();
-            
-            if (screenPos == _lastScreenPos)
+            if (_gameplayActions.Click.phase is InputActionPhase.Performed && 
+                !EventSystem.current.IsPointerOverGameObject())
             {
-                return;
+                var screenPos = _gameplayActions.Position.ReadValue<Vector2>();
+                var delta = _gameplayActions.Delta.ReadValue<Vector2>() * Time.deltaTime;
+                FireSignal(new PointerMovedSignal(screenPos, delta));
             }
-            
-            _lastScreenPos = screenPos;
-
-            FireSignal(new PointerMovedSignal(screenPos));
         }
     }
 }

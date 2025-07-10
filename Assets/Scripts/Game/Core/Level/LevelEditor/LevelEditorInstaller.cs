@@ -1,7 +1,7 @@
 using Game.Input;
 using Zenject.Helpers;
 
-namespace Game
+namespace Game.Core.Level.LevelEditor
 {
     public class LevelEditorInstaller : BaseMonoInstaller
     {

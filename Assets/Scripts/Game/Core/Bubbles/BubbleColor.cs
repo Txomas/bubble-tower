@@ -1,4 +1,4 @@
-namespace Game
+namespace Game.Core.Bubbles
 {
     public enum BubbleColor
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
-namespace Game
+namespace Game.Core.Level.LevelEditor
 {
     public class LevelDataService
     {
@@ -13,26 +13,30 @@ namespace Game
             return ScriptableObject.CreateInstance<LevelData>();
         }
 
+
         public string SaveLevelData(LevelData levelData)
         {
-            // Ensure the levels folder exists
             if (!AssetDatabase.IsValidFolder(ConfigsPaths.LevelsFolder))
             {
                 AssetDatabase.CreateFolder(ConfigsPaths.Assets + ConfigsPaths.Game.TrimEnd('/'), nameof(ConfigsPaths.Levels));
             }
 
-            // generate level name by Unity rules
             var levelName = "Level_" + GetAvailableLevelNames().Count.ToString("D2");
+            
+            SaveLevelData(levelName, levelData);
+            
+            return levelName;
+        }
+
+        public void SaveLevelData(string levelName, LevelData levelData)
+        {
             var assetPath = GetLevelAssetPath(levelName);
             
-            // Create the asset if it doesn't exist, otherwise update it
             AssetDatabase.CreateAsset(levelData, assetPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             
             Debug.Log($"Level data saved to: {assetPath}");
-
-            return assetPath;
         }
 
         public LevelData LoadLevelData(string levelName)

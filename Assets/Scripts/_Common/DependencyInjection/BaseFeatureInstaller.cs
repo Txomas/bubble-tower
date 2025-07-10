@@ -56,5 +56,10 @@ namespace Zenject.Helpers
         {
             return Container.DeclareSignal<TSignal>();
         }
+        
+        protected DeclareSignalAsyncTickPriorityCopyBinder DeclareOptionalSignal<TSignal>()
+        {
+            return DeclareSignal<TSignal>().OptionalSubscriber();
+        }
     }
 }

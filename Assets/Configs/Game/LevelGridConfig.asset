@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CellPrefab: {fileID: 8824412743923223781, guid: 867b2e0b02c448d4f9e40e5a8cd592d2, type: 3}
   CellSize: 1
-  Radius: 5
-  GridSize: {x: 10, y: 12}
+  Radius: 3.9788735
+  Columns: 25
+  Rows: 26

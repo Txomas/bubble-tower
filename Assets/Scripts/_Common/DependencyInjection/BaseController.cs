@@ -9,13 +9,19 @@ namespace Zenject.Helpers
         [Inject] private readonly SignalBus _signalBus;
         private readonly List<(Type, object)> _subscriptions = new();
         private readonly List<BaseController> _controllers = new();
-        private bool _isEnabled = true;
+        private bool _isInitialized;
+        private bool _isEnabled;
 
         public bool IsEnabled
         {
             get => _isEnabled;
             set
             {
+                if (!_isInitialized || _isEnabled == value)
+                {
+                    return;
+                }
+                
                 _isEnabled = value;
 
                 if (value)
@@ -31,12 +37,20 @@ namespace Zenject.Helpers
 
         public void Initialize()
         {
+            if (_isInitialized)
+            {
+                return;
+            }
+            
             OnInitialized();
         
             foreach (var controller in _controllers)
             {
                 controller.Initialize();
             }
+            
+            _isInitialized = true;
+            IsEnabled = true;
         }
 
         public void Tick()
@@ -48,6 +62,7 @@ namespace Zenject.Helpers
             
             OnTick();
         
+            // TODO: optimize this to avoid iterating over all controllers every tick
             foreach (var controller in _controllers)
             {
                 controller.Tick();
@@ -56,16 +71,14 @@ namespace Zenject.Helpers
 
         public void Dispose()
         {
-            foreach (var (type, action) in _subscriptions)
-            {
-                _signalBus.TryUnsubscribe(type, action);
-            }
+            UnsubscribeAll();
         
             foreach (var controller in _controllers)
             {
                 controller.Dispose();
             }
         
+            IsEnabled = false;
             OnDisposed();
         }
     
@@ -105,6 +118,16 @@ namespace Zenject.Helpers
         {
             _signalBus.TryUnsubscribe(action);
             _subscriptions.Remove((typeof(TSignal), action));
+        }
+        
+        protected void UnsubscribeAll()
+        {
+            foreach (var (type, action) in _subscriptions)
+            {
+                _signalBus.TryUnsubscribe(type, action);
+            }
+            
+            _subscriptions.Clear();
         }
         
         protected void FireSignal<TSignal>(TSignal signal)

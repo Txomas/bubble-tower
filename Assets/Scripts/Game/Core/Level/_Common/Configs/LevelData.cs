@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
+using Game.Core.Bubbles;
 using UnityEngine;
 
-namespace Game
+namespace Game.Core.Level
 {
     [CreateAssetMenu(fileName = "LevelData", menuName = ConfigsPaths.Configs + "LevelData")]
     public class LevelData : ScriptableObject

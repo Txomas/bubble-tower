@@ -1,6 +1,7 @@
+using Game.Core.Bubbles;
 using UnityEngine;
 
-namespace Game
+namespace Game.Core.Level
 {
     public struct BubbleChanged
     {

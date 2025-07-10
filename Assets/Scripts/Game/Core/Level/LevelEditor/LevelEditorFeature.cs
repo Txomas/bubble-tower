@@ -1,13 +1,12 @@
-using UnityEngine;
 using Zenject.Helpers;
 
-namespace Game
+namespace Game.Core.Level.LevelEditor
 {
     public class LevelEditorFeature : BaseFeatureInstaller<LevelEditorFeature>
     {
         protected override void OnFeatureEnabled()
         {
-            BindFromComponentInHierarchy<Camera>();
+            BindFromComponentInHierarchy<LevelEditorCameraView>();
             BindFromComponentInHierarchy<LevelEditorView>();
             BindFromComponentInHierarchy<LevelGridView>();
 
@@ -16,8 +15,11 @@ namespace Game
             BindSingleton<LevelDataService>();
             BindInterfacesAndSelfTo<LevelEditorGridService>().AsSingle();
 
-            BindRootController<LevelEditorGridController>();
+            BindRootController<LevelEditorCameraController>();
             BindRootController<LevelEditorController>();
+            BindChildController<LevelEditorGridController>();
+            BindChildController<TowerController>();
+            BindChildController<LevelEditorPaintingController>();
 
             DeclareSignal<BubbleChanged>();
             DeclareSignal<LevelViewModeChanged>();

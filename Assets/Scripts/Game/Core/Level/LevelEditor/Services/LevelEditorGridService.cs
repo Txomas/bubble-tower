@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace Game
+namespace Game.Core.Level.LevelEditor
 {
     public class LevelEditorGridService : GridService
     {
@@ -13,7 +13,7 @@ namespace Game
             var row = cellIndexes.y;
             var cellSize = _gridConfig.CellSize;
             
-            if (_model.ViewMode == LevelViewMode.FlatGrid)
+            if (_model.ViewMode == LevelViewMode.Editor)
             {
                 var x = col * cellSize + (row % 2 == 1 ? cellSize * 0.5f : 0f);
                 var z = row * cellSize * 0.75f;

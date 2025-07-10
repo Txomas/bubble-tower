@@ -1,13 +1,14 @@
 using System.Collections.Generic;
+using Game.Core.Bubbles;
 using UnityEngine;
 using Zenject;
 
-namespace Game
+namespace Game.Core.Level
 {
     public class LevelModel
     {
         [Inject] private readonly SignalBus _signalBus;
-        private Dictionary<Vector2Int, BubbleColor> _bubbles;
+        private Dictionary<Vector2Int, BubbleColor> _bubbles = new();
         
         public IReadOnlyDictionary<Vector2Int, BubbleColor> Bubbles => _bubbles;
 
@@ -34,8 +35,11 @@ namespace Game
                 return;
             }
 
-            
-            if (!_bubbles.TryAdd(index, newColor))
+            if (newColor is BubbleColor.None)
+            {
+                _bubbles.Remove(index);
+            }
+            else if (!_bubbles.TryAdd(index, newColor))
             {
                 _bubbles[index] = newColor;
             }

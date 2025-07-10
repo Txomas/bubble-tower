@@ -1,6 +1,6 @@
 using Zenject;
 
-namespace Game
+namespace Game.Core.Level.LevelEditor
 {
     public class LevelEditorModel
     {

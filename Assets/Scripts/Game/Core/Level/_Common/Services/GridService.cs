@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 
-namespace Game
+namespace Game.Core.Level
 {
     public class GridService : IGridService
     {
@@ -15,14 +15,24 @@ namespace Game
             var col = cellIndexes.x;
             var row = cellIndexes.y;
             var cellSize = _gridConfig.CellSize;
-            
+
             var radius = _gridConfig.Radius;
             var heightStep = cellSize * 0.75f;
-            var angle = col / (float)_gridConfig.Columns * Mathf.PI * 2f;
-            var x = Mathf.Cos(angle) * radius;
-            var z = Mathf.Sin(angle) * radius;
+
+            var colCount = _gridConfig.Columns;
+            var baseAngle = col / (float)colCount * Mathf.PI * 2f;
+
+            if (row % 2 == 1)
+            {
+                baseAngle += Mathf.PI * 2f / (2f * colCount);
+            }
+
+            var x = Mathf.Cos(baseAngle) * radius;
+            var z = Mathf.Sin(baseAngle) * radius;
             var y = row * heightStep;
+
             return new Vector3(x, -y, z);
+
         }
         
         public List<Vector2Int> GetUnconnectedCells()

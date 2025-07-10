@@ -9,7 +9,11 @@ namespace Game.Input
             BindSingleton<InputSystemActions>();
             BindRootController<InputController>();
 
-            DeclareSignal<PointerMovedSignal>();
+            DeclareOptionalSignal<PointerMovedSignal>();
+            DeclareOptionalSignal<ScrollSignal>();
+            DeclareOptionalSignal<NextClickedSignal>();
+            DeclareOptionalSignal<PreviousClickedSignal>();
+            DeclareOptionalSignal<MoveSignal>();
         }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game
+namespace Game.Core.Bubbles
 {
     public class BubbleView : MonoBehaviour
     {

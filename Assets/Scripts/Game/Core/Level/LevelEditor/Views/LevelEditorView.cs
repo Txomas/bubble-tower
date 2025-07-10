@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game
+namespace Game.Core.Level.LevelEditor
 {
     public class LevelEditorView : MonoBehaviour
     {
@@ -31,6 +31,15 @@ namespace Game
         {
             _viewModeDropdown.ClearOptions();
             _viewModeDropdown.AddOptions(options.ToList());
+        }
+        
+        public void SetSelectedColor(int index)
+        {
+            var count = _colorDropdown.options.Count;
+            index = index < 0 ? count - -index % count : index % count;
+            
+            _colorDropdown.value = index;
+            _colorDropdown.RefreshShownValue();
         }
     }
 }

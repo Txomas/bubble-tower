@@ -1,9 +1,10 @@
+using Game.Core.Bubbles;
 using UnityEngine;
 using Zenject;
 using Zenject.Helpers;
 using Object = UnityEngine.Object;
 
-namespace Game
+namespace Game.Core.Level
 {
     public class LevelGridController : BaseController
     {
@@ -16,6 +17,8 @@ namespace Game
 
         protected override void OnInitialized()
         {
+            base.OnInitialized();
+            
             Subscribe<NewLevelGridSet>(Rebuild);
             Subscribe<BubbleChanged>(UpdateCell);
         }

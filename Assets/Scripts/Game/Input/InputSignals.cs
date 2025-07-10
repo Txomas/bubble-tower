@@ -5,10 +5,40 @@ namespace Game.Input
     public struct PointerMovedSignal
     {
         public Vector2 ScreenPosition { get; }
+        public Vector2 Delta { get; }
         
-        public PointerMovedSignal(Vector2 screenPosition)
+        public PointerMovedSignal(Vector2 screenPosition, Vector2 delta)
         {
             ScreenPosition = screenPosition;
+            Delta = delta;
         }
+    }
+    
+    public struct MoveSignal
+    {
+        public Vector2 Direction { get; }
+        
+        public MoveSignal(Vector2 direction)
+        {
+            Direction = direction;
+        }
+    }
+    
+    public struct ScrollSignal
+    {
+        public float Delta { get; }
+        
+        public ScrollSignal(float delta)
+        {
+            Delta = delta;
+        }
+    }
+    
+    public struct NextClickedSignal
+    {
+    }
+    
+    public struct PreviousClickedSignal
+    {
     }
 }
