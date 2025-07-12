@@ -15,10 +15,6 @@ namespace Game.Core.Level
         }
     }
 
-    public struct LevelViewModeChanged
-    {
-    }
-
     public struct NewLevelGridSet
     {
     }

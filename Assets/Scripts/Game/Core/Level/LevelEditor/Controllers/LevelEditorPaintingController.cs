@@ -11,7 +11,7 @@ namespace Game.Core.Level.LevelEditor
     {
         [Inject] private readonly LevelEditorView _view;
         [Inject] private readonly LevelEditorCameraView _cameraView;
-        [Inject] private readonly LevelModel _levelModel;
+        [Inject] private readonly LevelEditorModel _model;
         
         protected override void OnEnabled()
         {
@@ -38,7 +38,7 @@ namespace Game.Core.Level.LevelEditor
                 hit.collider.TryGetComponent(out BubbleView view))
             {
                 var index = view.GridIndex;
-                _levelModel.ChangeBubbleColor(index, (BubbleColor)_view.SelectedColor);
+                _model.ChangeBubbleColor(index, (BubbleColor)_view.SelectedColor);
             }
         }
         

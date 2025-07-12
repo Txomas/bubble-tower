@@ -10,7 +10,7 @@ namespace Game.Core.Level
     {
         [Inject] private readonly BubblesConfig _bubblesConfig;
         [Inject] private readonly LevelGridConfig _config;
-        [Inject] private readonly LevelModel _model;
+        [Inject] private readonly IGridModel _model;
         [Inject] private readonly IGridService _service;
         [Inject] private readonly LevelGridView _view;
         private BubbleView[,] _bubbles;

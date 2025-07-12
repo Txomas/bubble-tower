@@ -47,6 +47,13 @@ namespace Game.Input
                 var delta = _gameplayActions.Delta.ReadValue<Vector2>() * Time.deltaTime;
                 FireSignal(new PointerMovedSignal(screenPos, delta));
             }
+            
+            if (_gameplayActions.Click.WasCompletedThisDynamicUpdate() && 
+                !EventSystem.current.IsPointerOverGameObject())
+            {
+                var screenPos = _gameplayActions.Position.ReadValue<Vector2>();
+                FireSignal(new PointerClickedSignal(screenPos));
+            }
         }
     }
 }

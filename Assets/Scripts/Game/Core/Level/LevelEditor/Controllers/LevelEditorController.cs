@@ -12,8 +12,7 @@ namespace Game.Core.Level.LevelEditor
     public class LevelEditorController : BaseController
     {
         [Inject] private readonly LevelEditorView _view;
-        [Inject] private readonly LevelModel _levelModel;
-        [Inject] private readonly LevelEditorModel _editorModel;
+        [Inject] private readonly LevelEditorModel _model;
         [Inject] private readonly IGridService _gridService;
         [Inject] private readonly LevelDataService _levelDataManager;
         private readonly Dictionary<LevelViewMode, BaseController> _controllersByMode = new();
@@ -49,14 +48,14 @@ namespace Game.Core.Level.LevelEditor
                 controller.IsEnabled = key == mode;
             }
             
-            _editorModel.SetViewMode(mode);
+            _model.SetViewMode(mode);
         }
 
         private void RegenerateGrid()
         {
             if (ConfirmReset())
             {
-                _levelModel.SetData(new Dictionary<Vector2Int, BubbleColor>());
+                _model.SetData(new Dictionary<Vector2Int, BubbleColor>());
             }
         }
 
@@ -73,7 +72,7 @@ namespace Game.Core.Level.LevelEditor
             }
             
             var data = ScriptableObject.CreateInstance<LevelData>();
-            data.SetColoredCells(_levelModel.Bubbles);
+            data.SetColoredCells(_model.Bubbles);
 
             if (string.IsNullOrEmpty(_currentLevelName))
             {
@@ -106,7 +105,7 @@ namespace Game.Core.Level.LevelEditor
             
             if (loadedLevelData != null)
             {
-                _levelModel.SetData(loadedLevelData);
+                _model.SetData(loadedLevelData);
                 _currentLevelName = levelName;
                 EditorUtility.DisplayDialog("Success", $"Level loaded: {levelName}", "OK");
             }
@@ -118,7 +117,7 @@ namespace Game.Core.Level.LevelEditor
 
         private bool ConfirmReset()
         {
-            if (_levelModel.Bubbles.Count <= 0)
+            if (_model.Bubbles.Count <= 0)
             {
                 return true;
             }
@@ -133,7 +132,7 @@ namespace Game.Core.Level.LevelEditor
                     SaveLevel();
                     return true;
                 case 1: // Discard
-                    _levelModel.SetData(new Dictionary<Vector2Int, BubbleColor>());
+                    _model.SetData(new Dictionary<Vector2Int, BubbleColor>());
                     return true;
                 default:
                     return false;

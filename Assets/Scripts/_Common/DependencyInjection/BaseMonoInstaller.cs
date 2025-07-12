@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Zenject.Helpers
 {
-    public class BaseMonoInstaller : MonoInstaller
+    public abstract class BaseMonoInstaller : MonoInstaller
     {
         [SerializeField] private ConfigsContainer _configsContainer;
 

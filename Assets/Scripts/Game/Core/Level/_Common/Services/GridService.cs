@@ -8,31 +8,40 @@ namespace Game.Core.Level
     public class GridService : IGridService
     {
         [Inject] protected readonly LevelGridConfig _gridConfig;
-        [Inject] private readonly LevelModel _levelModel;
+        [Inject] private readonly IGridModel _levelModel;
+        private float _rotationOffset;
+        
+        // TODO: cache?
+        private int Columns => _gridConfig.Columns;
+        private int Rows => _gridConfig.Rows;
+        private float HeightStep => _gridConfig.CellSize * 0.75f;
+        
+        public void SetRotationOffset(float offset)
+        {
+            _rotationOffset = offset;
+        }
         
         public virtual Vector3 GetCellPosition(Vector2Int cellIndexes)
         {
             var col = cellIndexes.x;
             var row = cellIndexes.y;
-            var cellSize = _gridConfig.CellSize;
 
             var radius = _gridConfig.Radius;
-            var heightStep = cellSize * 0.75f;
-
-            var colCount = _gridConfig.Columns;
-            var baseAngle = col / (float)colCount * Mathf.PI * 2f;
+            
+            var angle = col / (float)Columns * Mathf.PI * 2f;
 
             if (row % 2 == 1)
             {
-                baseAngle += Mathf.PI * 2f / (2f * colCount);
+                angle += Mathf.PI * 2f / (2f * Columns);
             }
+            
+            angle += _rotationOffset;
 
-            var x = Mathf.Cos(baseAngle) * radius;
-            var z = Mathf.Sin(baseAngle) * radius;
-            var y = row * heightStep;
+            var x = Mathf.Cos(angle) * radius;
+            var z = Mathf.Sin(angle) * radius;
+            var y = row * HeightStep;
 
             return new Vector3(x, -y, z);
-
         }
         
         public List<Vector2Int> GetUnconnectedCells()
@@ -41,11 +50,12 @@ namespace Game.Core.Level
             var queue = new Queue<Vector2Int>();
             
             // Enqueue top row bubbles
-            for (var c = 0; c < _gridConfig.Columns; c++)
+            for (var c = 0; c < Columns; c++)
             {
-                if (_levelModel.HasBubble(c, 0))
+                var pos = new Vector2Int(c, 0);
+                
+                if (_levelModel.HasBubble(pos))
                 {
-                    var pos = new Vector2Int(c, 0);
                     queue.Enqueue(pos);
                     connected.Add(pos);
                 }
@@ -60,7 +70,7 @@ namespace Game.Core.Level
                 {
                     var np = new Vector2Int(nc, nr);
                     
-                    if (!connected.Contains(np) && _levelModel.HasBubble(nc, nr))
+                    if (!connected.Contains(np) && _levelModel.HasBubble(np))
                     {
                         connected.Add(np);
                         queue.Enqueue(np);
@@ -87,7 +97,7 @@ namespace Game.Core.Level
                 var nc = WrapCol(col + offsets[i, 0]);
                 var nr = row + offsets[i, 1];
                 
-                if (nr >= 0 && nr < _gridConfig.Rows)
+                if (nr >= 0 && nr < Rows)
                 {
                     neighbors.Add((nc, nr));
                 }
@@ -98,7 +108,26 @@ namespace Game.Core.Level
         
         private int WrapCol(int col)
         {
-            return (col + _gridConfig.Columns) % _gridConfig.Columns;
+            return (col + Columns) % Columns;
+        }
+        
+        public (int col, int row) FindNearestCell(Vector3 worldPos)
+        {
+            var angle = Mathf.Atan2(worldPos.z, worldPos.x);
+            angle -= _rotationOffset;
+            
+            if (angle < 0f)
+            {
+                angle += Mathf.PI * 2f;
+            }
+
+            var anglePerCol = 2f * Mathf.PI / Columns;
+            var col = Mathf.RoundToInt(angle / anglePerCol) % Columns;
+
+            var y = -worldPos.y;
+            var row = Mathf.RoundToInt(y / HeightStep);
+
+            return (col, row);
         }
     }
 }

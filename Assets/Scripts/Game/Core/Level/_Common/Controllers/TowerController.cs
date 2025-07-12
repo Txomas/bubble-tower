@@ -7,6 +7,7 @@ namespace Game.Core.Level
 {
     public class TowerController : BaseController
     {
+        [Inject] private readonly IGridService _gridService;
         [Inject] private readonly LevelGridView _gridView;
         [Inject] private readonly PlayerInputConfig _inputConfig;
 
@@ -17,12 +18,13 @@ namespace Game.Core.Level
 
         protected override void OnDisabled()
         {
+            _gridView.CellsContainer.rotation = Quaternion.identity;
             UnsubscribeAll();
         }
 
         private void OnPointerMoved(PointerMovedSignal signal)
         {
-            var angle = signal.Delta.x * _inputConfig.TowerRotationSpeed;
+            var angle = -signal.Delta.x * _inputConfig.TowerRotationSpeed;
             _gridView.CellsContainer.Rotate(Vector3.up, angle);
         }
     }

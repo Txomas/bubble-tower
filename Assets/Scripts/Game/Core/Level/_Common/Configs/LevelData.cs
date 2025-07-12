@@ -8,6 +8,8 @@ namespace Game.Core.Level
     [CreateAssetMenu(fileName = "LevelData", menuName = ConfigsPaths.Configs + "LevelData")]
     public class LevelData : ScriptableObject
     {
+        public int PlayersBubblesCount;
+        
         [SerializeField] private SerializedDictionary<Vector2Int, BubbleColor> _coloredCells = new();
 
         public IReadOnlyDictionary<Vector2Int, BubbleColor> ColoredCells => _coloredCells;

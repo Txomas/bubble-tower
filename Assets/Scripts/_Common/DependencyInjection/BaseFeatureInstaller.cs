@@ -35,6 +35,11 @@ namespace Zenject.Helpers
             return Bind<T>().AsSingle();
         }
         
+        protected ConcreteIdArgConditionCopyNonLazyBinder BindSingletonAndInterfaces<T>()
+        {
+            return BindInterfacesAndSelfTo<T>().AsSingle();
+        }
+        
         protected FromBinderNonGeneric BindInterfacesAndSelfTo<T>()
         {
             return Container.BindInterfacesAndSelfTo<T>();
