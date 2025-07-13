@@ -94,7 +94,7 @@ namespace Game.Input
             ""id"": ""600bb409-789d-455b-9ea4-ba44ff176464"",
             ""actions"": [
                 {
-                    ""name"": ""Click"",
+                    ""name"": ""Press"",
                     ""type"": ""Button"",
                     ""id"": ""6aebfa79-f7bc-49b0-924b-d0f9b5352c65"",
                     ""expectedControlType"": ""Button"",
@@ -117,7 +117,7 @@ namespace Game.Input
                     ""id"": ""16655b5c-555e-4fa8-9fbd-36fbae23d75e"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -155,6 +155,15 @@ namespace Game.Input
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Tap"",
+                    ""type"": ""Button"",
+                    ""id"": ""169116ba-37a5-4a33-98d1-5ef9b2c5aed2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -165,7 +174,7 @@ namespace Game.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Click"",
+                    ""action"": ""Press"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -176,7 +185,7 @@ namespace Game.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Click"",
+                    ""action"": ""Press"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -364,6 +373,28 @@ namespace Game.Input
                     ""processors"": """",
                     ""groups"": ""Joystick"",
                     ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""165d9d79-716d-420c-8957-19060ccf7fb1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5801abc-bfcb-45c5-84c0-371d6ed3e15c"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1425,13 +1456,14 @@ namespace Game.Input
 }");
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-            m_Gameplay_Click = m_Gameplay.FindAction("Click", throwIfNotFound: true);
+            m_Gameplay_Press = m_Gameplay.FindAction("Press", throwIfNotFound: true);
             m_Gameplay_Position = m_Gameplay.FindAction("Position", throwIfNotFound: true);
             m_Gameplay_Delta = m_Gameplay.FindAction("Delta", throwIfNotFound: true);
             m_Gameplay_Next = m_Gameplay.FindAction("Next", throwIfNotFound: true);
             m_Gameplay_Previous = m_Gameplay.FindAction("Previous", throwIfNotFound: true);
             m_Gameplay_Scroll = m_Gameplay.FindAction("Scroll", throwIfNotFound: true);
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
+            m_Gameplay_Tap = m_Gameplay.FindAction("Tap", throwIfNotFound: true);
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
@@ -1537,13 +1569,14 @@ namespace Game.Input
         // Gameplay
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-        private readonly InputAction m_Gameplay_Click;
+        private readonly InputAction m_Gameplay_Press;
         private readonly InputAction m_Gameplay_Position;
         private readonly InputAction m_Gameplay_Delta;
         private readonly InputAction m_Gameplay_Next;
         private readonly InputAction m_Gameplay_Previous;
         private readonly InputAction m_Gameplay_Scroll;
         private readonly InputAction m_Gameplay_Move;
+        private readonly InputAction m_Gameplay_Tap;
         /// <summary>
         /// Provides access to input actions defined in input action map "Gameplay".
         /// </summary>
@@ -1556,9 +1589,9 @@ namespace Game.Input
             /// </summary>
             public GameplayActions(@InputSystemActions wrapper) { m_Wrapper = wrapper; }
             /// <summary>
-            /// Provides access to the underlying input action "Gameplay/Click".
+            /// Provides access to the underlying input action "Gameplay/Press".
             /// </summary>
-            public InputAction @Click => m_Wrapper.m_Gameplay_Click;
+            public InputAction @Press => m_Wrapper.m_Gameplay_Press;
             /// <summary>
             /// Provides access to the underlying input action "Gameplay/Position".
             /// </summary>
@@ -1583,6 +1616,10 @@ namespace Game.Input
             /// Provides access to the underlying input action "Gameplay/Move".
             /// </summary>
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
+            /// <summary>
+            /// Provides access to the underlying input action "Gameplay/Tap".
+            /// </summary>
+            public InputAction @Tap => m_Wrapper.m_Gameplay_Tap;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1609,9 +1646,9 @@ namespace Game.Input
             {
                 if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-                @Click.started += instance.OnClick;
-                @Click.performed += instance.OnClick;
-                @Click.canceled += instance.OnClick;
+                @Press.started += instance.OnPress;
+                @Press.performed += instance.OnPress;
+                @Press.canceled += instance.OnPress;
                 @Position.started += instance.OnPosition;
                 @Position.performed += instance.OnPosition;
                 @Position.canceled += instance.OnPosition;
@@ -1630,6 +1667,9 @@ namespace Game.Input
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Tap.started += instance.OnTap;
+                @Tap.performed += instance.OnTap;
+                @Tap.canceled += instance.OnTap;
             }
 
             /// <summary>
@@ -1641,9 +1681,9 @@ namespace Game.Input
             /// <seealso cref="GameplayActions" />
             private void UnregisterCallbacks(IGameplayActions instance)
             {
-                @Click.started -= instance.OnClick;
-                @Click.performed -= instance.OnClick;
-                @Click.canceled -= instance.OnClick;
+                @Press.started -= instance.OnPress;
+                @Press.performed -= instance.OnPress;
+                @Press.canceled -= instance.OnPress;
                 @Position.started -= instance.OnPosition;
                 @Position.performed -= instance.OnPosition;
                 @Position.canceled -= instance.OnPosition;
@@ -1662,6 +1702,9 @@ namespace Game.Input
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
+                @Tap.started -= instance.OnTap;
+                @Tap.performed -= instance.OnTap;
+                @Tap.canceled -= instance.OnTap;
             }
 
             /// <summary>
@@ -2147,12 +2190,12 @@ namespace Game.Input
         public interface IGameplayActions
         {
             /// <summary>
-            /// Method invoked when associated input action "Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "Press" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnClick(InputAction.CallbackContext context);
+            void OnPress(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "Position" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
@@ -2195,6 +2238,13 @@ namespace Game.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnMove(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Tap" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnTap(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.

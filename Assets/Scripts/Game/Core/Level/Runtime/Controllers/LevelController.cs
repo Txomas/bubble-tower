@@ -22,6 +22,7 @@ namespace Game.Core.Level.Runtime
         {
             var levelData = _service.GetCurrentLevelData();
             _model.SetData(levelData);
+            _model.SetState(LevelState.Idle);
         }
     }
 }

@@ -11,6 +11,9 @@ namespace Game.Core.Level.Runtime
     {
         [Inject] private readonly Camera _camera;
         [Inject] private readonly LevelModel _model;
+        [Inject] private readonly IGridService _gridService;
+        [Inject] private readonly LevelGridView _gridView;
+        [Inject] private readonly ShootingConfig _shootingConfig;
         private Random _playerBubblesRandom;
         
         public BubbleColor GetNewPlayerBubbleColor()
@@ -19,54 +22,59 @@ namespace Game.Core.Level.Runtime
             return _model.Bubbles.Values.Distinct().ToList().GetRandom(_playerBubblesRandom);
         }
 
-        public bool TryShootBubble(Vector2 clickPosition, out Vector3 shootTarget)
+        public bool TryShootBubble(Vector2 clickPosition, out Vector2Int shootIndex, out Vector3 shootTarget)
         {
+            shootTarget = Vector3.zero;
+            shootIndex = Vector2Int.zero;
+            
+            if (_model.State is not LevelState.Idle)
+            {
+                return false;
+            }
+            
             var ray = _camera.ScreenPointToRay(clickPosition);
             
             // TODO: not safe to check only for one collider hit
             if (!Physics.Raycast(ray, out var hit))
             {
-                shootTarget = Vector3.zero;
                 return false;
             }
 
-            var hitPoint = hit.point;
+            var tapWorldPos = hit.point;
+            var shootOrigin = _gridView.PlayerBubbleContainer.position;
+            // var surfaceNormal = (tapWorldPos - towerTransform.position).normalized;
+            // var toPoint = shootOrigin - tapWorldPos;
+            // var projectedOrigin = shootOrigin - Vector3.Dot(toPoint, surfaceNormal) * surfaceNormal;
+
+            if (!_gridService.TryGetFurthestFreeCell(shootOrigin, tapWorldPos, out shootIndex))
+            {
+                return false;
+            }
+
+            shootTarget = _gridService.IndexToLocalPos(shootIndex);
             
-            var (col, row) = FindNearestFreeCell(hitPoint);
-
             _model.RemovePlayerBubble();
+            _model.SetState(LevelState.Shooting);
+                
+            return true;
 
-            // 6. Assign to grid
-            BubbleColor color = _levelService.GetNewPlayerBubbleColor();
-            _gridService.Set(col, row, color);
-            _signals.Fire(new BubbleChanged { Position = new Vector2Int(col, row), NewColor = color });
         }
-        
-        private (int col, int row) FindNearestFreeCell(Vector3 worldPos)
+
+        public void FinishShooting(BubbleColor color, Vector2Int shootIndex)
         {
-            float radius = _gridConfig.Radius;
-            float cellSize = _gridConfig.CellSize;
-            var verticalStep = cellSize * 0.75f;
+            _model.ChangeBubbleColor(shootIndex, color);
+            
+            var cluster = _gridService.GetCluster(shootIndex, color);
 
-            // 1. Calculate angle around the tower
-            var angle = Mathf.Atan2(worldPos.z, worldPos.x);
-            if (angle < 0f) angle += Mathf.PI * 2f;
-
-            int colCount = _view.Columns;
-            var anglePerCol = 2f * Mathf.PI / colCount;
-
-            // 2. Get approximate column
-            var col = Mathf.RoundToInt(angle / anglePerCol) % colCount;
-
-            // 3. Calculate row from height
-            var y = -worldPos.y; // Because bubbles grow downward in world space
-            var row = Mathf.RoundToInt(y / verticalStep);
-
-            // Clamp inside grid bounds
-            row = Mathf.Clamp(row, 0, _view.Rows - 1);
-            col = (col + colCount) % colCount;
-
-            return (col, row);
+            if (cluster.Count >= _shootingConfig.MinToPop)
+            {
+                foreach (var index in cluster)
+                {
+                    _model.ChangeBubbleColor(index, BubbleColor.None);
+                }
+            }
+            
+            _model.SetState(LevelState.Idle);
         }
     }
 }

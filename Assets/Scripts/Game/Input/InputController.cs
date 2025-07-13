@@ -40,7 +40,7 @@ namespace Game.Input
                 FireSignal(new MoveSignal(direction));
             }
             
-            if (_gameplayActions.Click.phase is InputActionPhase.Performed && 
+            if (_gameplayActions.Press.phase is InputActionPhase.Performed && 
                 !EventSystem.current.IsPointerOverGameObject())
             {
                 var screenPos = _gameplayActions.Position.ReadValue<Vector2>();
@@ -48,11 +48,11 @@ namespace Game.Input
                 FireSignal(new PointerMovedSignal(screenPos, delta));
             }
             
-            if (_gameplayActions.Click.WasCompletedThisDynamicUpdate() && 
+            if (_gameplayActions.Tap.WasPerformedThisFrame() && 
                 !EventSystem.current.IsPointerOverGameObject())
             {
                 var screenPos = _gameplayActions.Position.ReadValue<Vector2>();
-                FireSignal(new PointerClickedSignal(screenPos));
+                FireSignal(new PointerTappedSignal(screenPos));
             }
         }
     }

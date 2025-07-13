@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Game.Core.Bubbles;
 using UnityEngine;
 using Zenject;
 
@@ -9,19 +10,14 @@ namespace Game.Core.Level
     {
         [Inject] protected readonly LevelGridConfig _gridConfig;
         [Inject] private readonly IGridModel _levelModel;
-        private float _rotationOffset;
+        [Inject] private readonly LevelGridView _gridView;
         
         // TODO: cache?
         private int Columns => _gridConfig.Columns;
         private int Rows => _gridConfig.Rows;
-        private float HeightStep => _gridConfig.CellSize * 0.75f;
+        private float HeightStep => _gridConfig.CellSize * _gridConfig.HeightStepFactor;
         
-        public void SetRotationOffset(float offset)
-        {
-            _rotationOffset = offset;
-        }
-        
-        public virtual Vector3 GetCellPosition(Vector2Int cellIndexes)
+        public virtual Vector3 IndexToLocalPos(Vector2Int cellIndexes)
         {
             var col = cellIndexes.x;
             var row = cellIndexes.y;
@@ -35,8 +31,6 @@ namespace Game.Core.Level
                 angle += Mathf.PI * 2f / (2f * Columns);
             }
             
-            angle += _rotationOffset;
-
             var x = Mathf.Cos(angle) * radius;
             var z = Mathf.Sin(angle) * radius;
             var y = row * HeightStep;
@@ -44,7 +38,29 @@ namespace Game.Core.Level
             return new Vector3(x, -y, z);
         }
         
-        public List<Vector2Int> GetUnconnectedCells()
+        public Vector2Int WorldToGridIndex(Vector3 worldPos)
+        {
+            var localPos = _gridView.CellsContainer.InverseTransformPoint(worldPos);
+            
+            var row = Mathf.RoundToInt(-localPos.y / HeightStep);
+            var angle = Mathf.Atan2(localPos.z, localPos.x);
+            
+            if (row % 2 == 1)
+            {
+                angle -= Mathf.PI * 2f / (2f * Columns);
+            }
+            
+            if (angle < 0f)
+            {
+                angle += Mathf.PI * 2f;
+            }
+
+            var col = Mathf.RoundToInt(angle / (Mathf.PI * 2f) * Columns);
+            
+            return new Vector2Int(col, row);
+        }
+        
+        public List<Vector2Int> GetFloatingBubbles()
         {
             var connected = new HashSet<Vector2Int>();
             var queue = new Queue<Vector2Int>();
@@ -66,10 +82,8 @@ namespace Game.Core.Level
             {
                 var pos = queue.Dequeue();
                 
-                foreach (var (nc, nr) in GetNeighbors(pos.x, pos.y))
+                foreach (var np in GetNeighbors(pos.x, pos.y))
                 {
-                    var np = new Vector2Int(nc, nr);
-                    
                     if (!connected.Contains(np) && _levelModel.HasBubble(np))
                     {
                         connected.Add(np);
@@ -85,12 +99,12 @@ namespace Game.Core.Level
                 .ToList();
         }
         
-        public (int col, int row)[] GetNeighbors(int col, int row)
+        public List<Vector2Int> GetNeighbors(int col, int row)
         {
             var offsets = row % 2 == 0
                 ? new[,] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, { -1, -1 }, { -1, 1 } }
                 : new[,] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, { 1, -1 }, { 1, 1 } };
-            var neighbors = new List<(int, int)>();
+            var neighbors = new List<Vector2Int>();
             
             for (var i = 0; i < 6; i++)
             {
@@ -99,35 +113,78 @@ namespace Game.Core.Level
                 
                 if (nr >= 0 && nr < Rows)
                 {
-                    neighbors.Add((nc, nr));
+                    neighbors.Add(new Vector2Int(nc, nr));
                 }
             }
             
-            return neighbors.ToArray();
+            return neighbors;
         }
         
         private int WrapCol(int col)
         {
             return (col + Columns) % Columns;
         }
-        
-        public (int col, int row) FindNearestCell(Vector3 worldPos)
+
+        public bool TryGetFurthestFreeCell(Vector3 origin, Vector3 target, out Vector2Int cellIndex)
         {
-            var angle = Mathf.Atan2(worldPos.z, worldPos.x);
-            angle -= _rotationOffset;
-            
-            if (angle < 0f)
+            var direction = (target - origin).normalized;
+
+            var positionToCheck = origin;
+            Vector2Int? lastEmpty = null;
+            var lastIndex = Vector2Int.zero;
+
+            while (lastIndex is { x: >= 0, y: >= 0 })
             {
-                angle += Mathf.PI * 2f;
+                lastIndex = WorldToGridIndex(positionToCheck);
+                
+                if (_levelModel.HasBubble(lastIndex))
+                {
+                    break;
+                }
+                
+                lastEmpty = lastIndex;
+                positionToCheck += direction * _gridConfig.HeightStepFactor;
+            }
+            
+            if (lastEmpty.HasValue)
+            {
+                cellIndex = lastEmpty.Value;
+                return true;
+            }
+            else
+            {
+                cellIndex = Vector2Int.zero;
+                return false;
+            }
+        }
+        
+        public HashSet<Vector2Int> GetCluster(Vector2Int startIndex, BubbleColor color)
+        {
+            var result = new HashSet<Vector2Int>();
+            var queue = new Queue<Vector2Int>();
+
+            queue.Enqueue(startIndex);
+            result.Add(startIndex);
+
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                var neighbors = GetNeighbors(current.x, current.y);
+                
+                foreach (var neighbor in neighbors)
+                {
+                    if (!result.Contains(neighbor) && 
+                        _levelModel.Bubbles.TryGetValue(neighbor, out var bubbleColor) && 
+                        bubbleColor == color)
+                    {
+                        result.Add(neighbor);
+                        queue.Enqueue(neighbor);
+                    }
+                }
             }
 
-            var anglePerCol = 2f * Mathf.PI / Columns;
-            var col = Mathf.RoundToInt(angle / anglePerCol) % Columns;
-
-            var y = -worldPos.y;
-            var row = Mathf.RoundToInt(y / HeightStep);
-
-            return (col, row);
+            return result;
         }
+
     }
 }

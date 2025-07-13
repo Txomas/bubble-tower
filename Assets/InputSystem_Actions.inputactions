@@ -6,7 +6,7 @@
             "id": "600bb409-789d-455b-9ea4-ba44ff176464",
             "actions": [
                 {
-                    "name": "Click",
+                    "name": "Press",
                     "type": "Button",
                     "id": "6aebfa79-f7bc-49b0-924b-d0f9b5352c65",
                     "expectedControlType": "Button",
@@ -29,7 +29,7 @@
                     "id": "16655b5c-555e-4fa8-9fbd-36fbae23d75e",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": true
                 },
                 {
@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "169116ba-37a5-4a33-98d1-5ef9b2c5aed2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -77,7 +86,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Click",
+                    "action": "Press",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -88,7 +97,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Click",
+                    "action": "Press",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -276,6 +285,28 @@
                     "processors": "",
                     "groups": "Joystick",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "165d9d79-716d-420c-8957-19060ccf7fb1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5801abc-bfcb-45c5-84c0-371d6ed3e15c",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

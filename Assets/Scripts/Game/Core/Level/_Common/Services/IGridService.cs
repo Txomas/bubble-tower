@@ -1,13 +1,14 @@
 using System.Collections.Generic;
+using Game.Core.Bubbles;
 using UnityEngine;
 
 namespace Game.Core.Level
 {
     public interface IGridService
     {
-        Vector3 GetCellPosition(Vector2Int cellIndexes);
-        List<Vector2Int> GetUnconnectedCells();
-        (int col, int row)[] GetNeighbors(int col, int row);
-        (int col, int row) FindNearestCell(Vector3 worldPos);
+        Vector3 IndexToLocalPos(Vector2Int cellIndexes);
+        List<Vector2Int> GetFloatingBubbles();
+        bool TryGetFurthestFreeCell(Vector3 origin, Vector3 target, out Vector2Int cellIndex);
+        HashSet<Vector2Int> GetCluster(Vector2Int startIndex, BubbleColor color);
     }
 }

@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Game.Core.Level.LevelEditor
 {
-    public class LevelEditorGridController : LevelGridController
+    public class LevelEditorGridController : BaseLevelGridController
     {
         [Inject] private readonly LevelEditorModel _model;
 
@@ -15,9 +15,14 @@ namespace Game.Core.Level.LevelEditor
             Subscribe<LevelViewModeChanged>(Rebuild);
         }
 
-        protected override bool ShouldCreateCell(Vector2Int indexes, out BubbleColor color)
+        protected override void OnBubbleChanged(BubbleChanged changedData)
         {
-            return base.ShouldCreateCell(indexes, out color) || _model.ViewMode is LevelViewMode.Editor;
+            SetBubbleColor(changedData.Index, changedData.NewColor);
+        }
+
+        protected override bool ShouldCreateBubble(Vector2Int indexes, out BubbleColor color)
+        {
+            return base.ShouldCreateBubble(indexes, out color) || _model.ViewMode is LevelViewMode.Editor;
         }
     }
 }

@@ -5,12 +5,12 @@ namespace Game.Core.Level
 {
     public struct BubbleChanged
     {
-        public Vector2Int Position { get; }
+        public Vector2Int Index { get; }
         public BubbleColor NewColor { get; }
         
-        public BubbleChanged(Vector2Int position, BubbleColor newColor)
+        public BubbleChanged(Vector2Int index, BubbleColor newColor)
         {
-            Position = position;
+            Index = index;
             NewColor = newColor;
         }
     }

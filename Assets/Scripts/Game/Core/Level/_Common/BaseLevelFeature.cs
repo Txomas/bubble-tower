@@ -6,7 +6,7 @@ namespace Game.Core.Level
         where T : BaseLevelFeature<T, TModel, TService, TController>
         where TModel : IGridModel
         where TService : IGridService
-        where TController : LevelGridController
+        where TController : BaseLevelGridController
     {
         protected override void OnFeatureEnabled()
         {

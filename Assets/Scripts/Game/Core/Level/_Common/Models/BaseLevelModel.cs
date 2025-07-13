@@ -12,7 +12,7 @@ namespace Game.Core.Level
         
         public IReadOnlyDictionary<Vector2Int, BubbleColor> Bubbles => _bubbles;
 
-        public void SetData(LevelData data)
+        public virtual void SetData(LevelData data)
         {
             SetData(data.ColoredCells);
         }

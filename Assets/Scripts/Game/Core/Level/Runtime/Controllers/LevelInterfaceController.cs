@@ -10,8 +10,7 @@ namespace Game.Core.Level.Runtime
 
         protected override void OnInitialized()
         {
-            UpdateBubblesCount();
-
+            Subscribe<NewLevelGridSet>(UpdateBubblesCount);
             Subscribe<PlayerBubblesChanged>(UpdateBubblesCount);
         }
 

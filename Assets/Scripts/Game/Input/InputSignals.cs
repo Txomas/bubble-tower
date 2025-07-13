@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace Game.Input
 {
-    public struct PointerClickedSignal
+    public struct PointerTappedSignal
     {
         public Vector2 ScreenPosition { get; }
         
-        public PointerClickedSignal(Vector2 screenPosition)
+        public PointerTappedSignal(Vector2 screenPosition)
         {
             ScreenPosition = screenPosition;
         }

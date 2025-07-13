@@ -18,6 +18,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93c706a861cc622458b7db9435fe4dad, type: 2}
   - {fileID: 11400000, guid: da994aaa4d60e084e863076e578193de, type: 2}
   - {fileID: 11400000, guid: 45956440e24995649aef796cbe5b353b, type: 2}
+  - {fileID: 11400000, guid: be240a5e456deda4eab8142b85ae824e, type: 2}
   _folders:
   - {fileID: 102900000, guid: 63182cdb43d05854091f076167050118, type: 3}
   _foldersPaths:

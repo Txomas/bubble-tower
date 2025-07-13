@@ -7,7 +7,7 @@ namespace Game.Core.Level.LevelEditor
     {
         [Inject] private readonly LevelEditorModel _model;
 
-        public override Vector3 GetCellPosition(Vector2Int cellIndexes)
+        public override Vector3 IndexToLocalPos(Vector2Int cellIndexes)
         {
             var col = cellIndexes.x;
             var row = cellIndexes.y;
@@ -21,7 +21,7 @@ namespace Game.Core.Level.LevelEditor
             }
             else
             {
-                return base.GetCellPosition(cellIndexes);
+                return base.IndexToLocalPos(cellIndexes);
             }
         }
     }

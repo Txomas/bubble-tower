@@ -61,7 +61,7 @@ namespace Game.Core.Level.LevelEditor
 
         private void SaveLevel()
         {
-            var unconnected = _gridService.GetUnconnectedCells();
+            var unconnected = _gridService.GetFloatingBubbles();
             
             if (unconnected.Count > 0)
             {
