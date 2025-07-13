@@ -19,7 +19,6 @@ namespace Game.Core.Level.Runtime
             BindChildController<LevelPlayerController>();
 
             DeclareSignal<PlayerBubblesChanged>();
-            DeclareSignal<ShootingFinished>();
         }
     }
 }

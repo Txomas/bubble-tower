@@ -16,6 +16,8 @@ namespace Game.Core.Level
         [ReadOnly] public float Radius = 5f;
         [CallOnChange(nameof(RecalculateRadius))] public int Columns;
         public int Rows = 10;
+        
+        public float HeightStep => CellSize * HeightStepFactor;
 
         private void RecalculateRadius()
         {

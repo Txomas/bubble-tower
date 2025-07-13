@@ -25,11 +25,6 @@ namespace Game.Core.Level.Runtime
                 return;
             }
             
-            if (State == LevelState.Shooting)
-            {
-                _signalBus.Fire(new ShootingFinished());
-            }
-            
             State = state;
         }
     }

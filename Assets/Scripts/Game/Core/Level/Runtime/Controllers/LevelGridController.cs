@@ -7,13 +7,6 @@ namespace Game.Core.Level.Runtime
     {
         [Inject] private readonly IGridService _service;
 
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            
-            Subscribe<ShootingFinished>(OnShootingFinished);
-        }
-
         protected override void OnBubbleChanged(BubbleChanged changedData)
         {
             var color = changedData.NewColor;
@@ -26,16 +19,6 @@ namespace Game.Core.Level.Runtime
             else
             {
                 SetBubbleColor(index, color);
-            }
-        }
-        
-        private void OnShootingFinished(ShootingFinished _)
-        {
-            var floatingBubbles = _service.GetFloatingBubbles();
-            
-            foreach (var index in floatingBubbles)
-            {
-                RemoveBubble(index);
             }
         }
     }

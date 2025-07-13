@@ -15,7 +15,7 @@ namespace Game.Core.Level
         // TODO: cache?
         private int Columns => _gridConfig.Columns;
         private int Rows => _gridConfig.Rows;
-        private float HeightStep => _gridConfig.CellSize * _gridConfig.HeightStepFactor;
+        private float HeightStep => _gridConfig.HeightStep;
         
         public virtual Vector3 IndexToLocalPos(Vector2Int cellIndexes)
         {

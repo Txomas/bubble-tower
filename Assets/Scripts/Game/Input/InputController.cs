@@ -51,8 +51,13 @@ namespace Game.Input
             if (_gameplayActions.Tap.WasPerformedThisFrame() && 
                 !EventSystem.current.IsPointerOverGameObject())
             {
-                var screenPos = _gameplayActions.Position.ReadValue<Vector2>();
-                FireSignal(new PointerTappedSignal(screenPos));
+                var delta = _gameplayActions.Delta.ReadValue<Vector2>() * Time.deltaTime;
+
+                if (delta.magnitude < 0.1f)
+                {
+                    var screenPos = _gameplayActions.Position.ReadValue<Vector2>();
+                    FireSignal(new PointerTappedSignal(screenPos));
+                }
             }
         }
     }

@@ -10,9 +10,11 @@ namespace Game.Core.Level
         
         [SerializeField] private Transform _cellsContainer;
         [SerializeField] private Transform _playerBubbleContainer;
+        [SerializeField] private Transform _tower;
 
         public Transform CellsContainer => _cellsContainer;
         public Transform PlayerBubbleContainer => _playerBubbleContainer;
+        public Transform Tower => _tower;
         
         public void AddBubble(BubbleView bubble, Vector2Int index)
         {

@@ -72,6 +72,13 @@ namespace Game.Core.Level.Runtime
                 {
                     _model.ChangeBubbleColor(index, BubbleColor.None);
                 }
+                
+                var floatingBubbles = _gridService.GetFloatingBubbles();
+            
+                foreach (var index in floatingBubbles)
+                {
+                    _model.ChangeBubbleColor(index, BubbleColor.None);
+                }
             }
             
             _model.SetState(LevelState.Idle);

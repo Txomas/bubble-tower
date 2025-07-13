@@ -117,7 +117,7 @@ namespace Game.Input
                     ""id"": ""16655b5c-555e-4fa8-9fbd-36fbae23d75e"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
