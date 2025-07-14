@@ -1,3 +1,6 @@
+using Game.Core.Bubbles;
+using UnityEngine;
+
 namespace Game.Core.Level.Runtime
 {
     public class LevelModel : BaseLevelModel
@@ -12,7 +15,7 @@ namespace Game.Core.Level.Runtime
             PlayersBubblesLeft = data.PlayersBubblesCount;
         }
 
-        public void RemovePlayerBubble()
+        public void UsePlayerBubble()
         {
             PlayersBubblesLeft--;
             _signalBus.Fire(new PlayerBubblesChanged());
@@ -27,6 +30,11 @@ namespace Game.Core.Level.Runtime
             
             State = state;
             _signalBus.Fire(new LevelStateChanged(state));
+        }
+
+        public void RemoveBubble(Vector2Int index, bool isDropped)
+        {
+            ChangeBubbleColor(index, BubbleColor.None, isDropped);
         }
     }
 }

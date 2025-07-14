@@ -21,9 +21,10 @@ namespace Game.Core.Level.LevelEditor
             }
         }
         
-        public Ray ScreenPointToRay(Vector2 screenPosition)
+        public Vector3 ScreenPointToWorld(Vector2 screenPosition)
         {
-            return EditorCamera.ScreenPointToRay(screenPosition);
+            var screenPont = new Vector3(screenPosition.x, screenPosition.y, EditorCamera.transform.position.y);
+            return EditorCamera.ScreenToWorldPoint(screenPont);
         }
         
         public void SetViewMode(LevelViewMode viewMode)

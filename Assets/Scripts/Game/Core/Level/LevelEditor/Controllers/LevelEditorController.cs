@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Common.Extensions;
 using Game.Core.Bubbles;
 using UnityEditor;
 using UnityEngine;
@@ -16,16 +17,20 @@ namespace Game.Core.Level.LevelEditor
         [Inject] private readonly LevelEditorModel _model;
         [Inject] private readonly IGridService _gridService;
         [Inject] private readonly LevelDataService _levelDataManager;
-        private readonly Dictionary<LevelViewMode, BaseController> _controllersByMode = new();
+        private readonly Dictionary<LevelViewMode, IActivatable> _controllersByMode = new();
         private string _currentLevelName;
 
         protected override void OnInitialized()
         {
             CreateController<LevelEditorGridController>();
 
-            // TODO: rewrite with mediator pattern
-            _controllersByMode.Add(LevelViewMode.Editor, CreateController<LevelEditorPaintingController>());
-            _controllersByMode.Add(LevelViewMode.Preview, CreateController<TowerController>());
+            var modes = Enum.GetValues(typeof(LevelViewMode));
+            
+            foreach (LevelViewMode mode in modes)
+            {
+                var controller = CreateControllerWithId<IActivatable>(mode);
+                _controllersByMode.Add(mode, controller);
+            }
             
             _view.SetColorOptions(Enum.GetNames(typeof(BubbleColor)));
             _view.SetViewModeOptions(Enum.GetNames(typeof(LevelViewMode)));

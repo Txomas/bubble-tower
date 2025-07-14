@@ -1,4 +1,4 @@
-using UnityEngine;
+using Zenject.Helpers;
 
 namespace Game.Core.Level.LevelEditor
 {
@@ -15,7 +15,8 @@ namespace Game.Core.Level.LevelEditor
 
             BindRootController<LevelEditorCameraController>();
             BindRootController<LevelEditorController>();
-            BindChildController<LevelEditorPaintingController>();
+            BindChildControllerWithId<IActivatable, LevelEditorPaintingController>(LevelViewMode.Editor);
+            BindChildControllerWithId<IActivatable, TowerController>(LevelViewMode.Preview);
 
             DeclareSignal<LevelViewModeChanged>();
         }

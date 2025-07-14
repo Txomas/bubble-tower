@@ -16,7 +16,6 @@ namespace Game.Core.Level
             BindSingletonAndInterfaces<TService>();
             
             BindChildController<TController>();
-            BindChildController<TowerController>();
 
             DeclareSignal<BubbleChanged>();
             DeclareSignal<NewLevelGridSet>();

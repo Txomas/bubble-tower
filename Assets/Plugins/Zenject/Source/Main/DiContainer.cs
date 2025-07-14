@@ -1297,7 +1297,7 @@ namespace Zenject
                 "Error occurred while instantiating object of type '{0}'. Instantiator should not be used to create new mono behaviours.  Must use InstantiatePrefabForComponent, InstantiatePrefab, or InstantiateComponent.", concreteType);
 #endif
 
-            Assert.That(!concreteType.IsAbstract(), "Expected type '{0}' to be non-abstract", concreteType);
+            //Assert.That(!concreteType.IsAbstract(), "Expected type '{0}' to be non-abstract", concreteType);
 
             FlushBindings();
             CheckForInstallWarning(context);

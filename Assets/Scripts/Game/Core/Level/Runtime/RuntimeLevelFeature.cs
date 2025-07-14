@@ -17,6 +17,7 @@ namespace Game.Core.Level.Runtime
             BindRootController<LevelController>();
             BindChildController<LevelInterfaceController>();
             BindChildController<LevelPlayerController>();
+            BindChildController<TowerController>();
 
             DeclareSignal<PlayerBubblesChanged>();
             DeclareSignal<LevelStateChanged>();

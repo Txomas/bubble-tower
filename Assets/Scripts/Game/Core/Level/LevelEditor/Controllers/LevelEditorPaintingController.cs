@@ -1,7 +1,5 @@
 using Game.Core.Bubbles;
 using Game.Input;
-using UnityEngine;
-using UnityEngine.EventSystems;
 using Zenject;
 using Zenject.Helpers;
 
@@ -12,6 +10,8 @@ namespace Game.Core.Level.LevelEditor
         [Inject] private readonly LevelEditorView _view;
         [Inject] private readonly LevelEditorCameraView _cameraView;
         [Inject] private readonly LevelEditorModel _model;
+        [Inject] private readonly IGridService _gridService;
+        [Inject] private readonly LevelGridConfig _gridConfig;
         
         protected override void OnEnabled()
         {
@@ -27,17 +27,12 @@ namespace Game.Core.Level.LevelEditor
 
         private void OnPointerMoved(PointerMovedSignal signal)
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            var world = _cameraView.ScreenPointToWorld(signal.ScreenPosition);
+            var index = _gridService.WorldToGridIndex(world);
+
+            if (index.x >= 0 && index.x < _gridConfig.Columns &&
+                index.y >= 0 && index.y < _gridConfig.Rows)
             {
-                return;
-            }
-            
-            var ray = _cameraView.ScreenPointToRay(signal.ScreenPosition);
-            
-            if (Physics.Raycast(ray, out var hit) && 
-                hit.collider.TryGetComponent(out BubbleView view))
-            {
-                var index = view.GridIndex;
                 _model.ChangeBubbleColor(index, (BubbleColor)_view.SelectedColor);
             }
         }

@@ -28,7 +28,7 @@ namespace Game.Core.Level
             return _bubbles.ContainsKey(indexes);
         }
         
-        public void ChangeBubbleColor(Vector2Int index, BubbleColor newColor)
+        public void ChangeBubbleColor(Vector2Int index, BubbleColor newColor, bool isDropped = false)
         {
             if (_bubbles.TryGetValue(index, out var currentColor) && currentColor == newColor)
             {
@@ -44,7 +44,7 @@ namespace Game.Core.Level
                 _bubbles[index] = newColor;
             }
 
-            _signalBus.Fire(new BubbleChanged(index, newColor));
+            _signalBus.Fire(new BubbleChanged(index, newColor, isDropped));
         }
     }
 }

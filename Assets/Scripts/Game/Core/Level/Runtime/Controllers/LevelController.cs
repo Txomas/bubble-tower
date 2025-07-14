@@ -54,6 +54,8 @@ namespace Game.Core.Level.Runtime
         {
             SetLevelControllersActive(false);
             _savingService.Save(_playerStatsModel);
+            
+            // TODO: show interstitial ad here
         }
 
         public void RestartLevel()

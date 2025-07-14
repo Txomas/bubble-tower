@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Zenject.Helpers
 {
-    public abstract class BaseController : IInitializable, ITickable, IDisposable
+    public abstract class BaseController : IInitializable, ITickable, IDisposable, IActivatable
     {
         #region Lifecycle
 
@@ -171,36 +171,23 @@ namespace Zenject.Helpers
             return controller;
         }
         
-        protected bool TryCreateControllerWithId<T>(object id, out T controller, bool isIdInConstructor = false, params object[] args) where T : class
+        protected bool TryCreateControllerWithId<T>(object id, out T controller) where T : class
         {
-            controller = _container.ResolveId<T>(id);
+            controller = _container.TryResolveId<T>(id);
+
+            if (controller != null)
+            {
+                AddController(controller as BaseController);
+            }
+
             return controller != null;
-            
-            // if (type == null)
-            // {
-            //     controller = default;
-            //     return false;
-            // }
-            //
-            // if (isIdInConstructor)
-            // {
-            //     args = new[] {id}.Concat(args).ToArray();
-            // }
-            //
-            // controller = args.Length > 0 ? CreateController<T>(type, args) : CreateController<T>(type);
-            // return true;
         }
         
-        protected T CreateControllerWithId<T>(object id, bool isIdInConstructor, params object[] args) where T : BaseController
+        protected T CreateControllerWithId<T>(object id)
         {
-            var type = _container.ResolveTypeId<T>(id);
-            
-            if (isIdInConstructor)
-            {
-                args = new[] {id}.Concat(args).ToArray();
-            }
-            
-            return args.Length > 0 ? CreateController<T>(type, args) : CreateController<T>(type);
+            var controller = _container.ResolveId<T>(id);
+            AddController(controller as BaseController);
+            return controller;
         }
         
         protected void AddController(BaseController controller)

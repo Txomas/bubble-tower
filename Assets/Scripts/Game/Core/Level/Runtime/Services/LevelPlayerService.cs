@@ -53,7 +53,7 @@ namespace Game.Core.Level.Runtime
 
             shootTarget = _gridService.IndexToLocalPos(shootIndex);
             
-            _model.RemovePlayerBubble();
+            _model.UsePlayerBubble();
             _model.SetState(LevelState.Shooting);
                 
             return true;
@@ -70,14 +70,14 @@ namespace Game.Core.Level.Runtime
             {
                 foreach (var index in cluster)
                 {
-                    _model.ChangeBubbleColor(index, BubbleColor.None);
+                    _model.RemoveBubble(index, false);
                 }
                 
                 var floatingBubbles = _gridService.GetFloatingBubbles();
             
                 foreach (var index in floatingBubbles)
                 {
-                    _model.ChangeBubbleColor(index, BubbleColor.None);
+                    _model.RemoveBubble(index, true);
                 }
             }
             

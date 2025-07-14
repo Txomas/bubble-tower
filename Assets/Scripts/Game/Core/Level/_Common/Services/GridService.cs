@@ -13,9 +13,10 @@ namespace Game.Core.Level
         [Inject] private readonly LevelGridView _gridView;
         
         // TODO: cache?
-        private int Columns => _gridConfig.Columns;
-        private int Rows => _gridConfig.Rows;
-        private float HeightStep => _gridConfig.HeightStep;
+        protected float CellSize => _gridConfig.CellSize;
+        protected int Columns => _gridConfig.Columns;
+        protected int Rows => _gridConfig.Rows;
+        protected float HeightStep => _gridConfig.HeightStep;
         
         public virtual Vector3 IndexToLocalPos(Vector2Int cellIndexes)
         {
@@ -38,9 +39,9 @@ namespace Game.Core.Level
             return new Vector3(x, -y, z);
         }
         
-        public Vector2Int WorldToGridIndex(Vector3 worldPos)
+        public virtual Vector2Int WorldToGridIndex(Vector3 worldPos)
         {
-            var localPos = _gridView.CellsContainer.InverseTransformPoint(worldPos);
+            var localPos = GetLocalPoint(worldPos);
             
             var row = Mathf.RoundToInt(-localPos.y / HeightStep);
             var angle = Mathf.Atan2(localPos.z, localPos.x);
@@ -58,6 +59,11 @@ namespace Game.Core.Level
             var col = Mathf.RoundToInt(angle / (Mathf.PI * 2f) * Columns);
             
             return new Vector2Int(col, row);
+        }
+
+        protected Vector3 GetLocalPoint(Vector3 worldPoint)
+        {
+            return _gridView.CellsContainer.InverseTransformPoint(worldPoint);
         }
         
         public List<Vector2Int> GetFloatingBubbles()
