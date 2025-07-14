@@ -23,13 +23,10 @@ namespace Game.Core.Level
         protected override void OnEnabled()
         {
             Subscribe<PointerMovedSignal>(OnPointerMoved);
-            
-            _gridView.Tower.gameObject.SetActive(true);
         }
 
         protected override void OnDisabled()
         {
-            _gridView.Tower.gameObject.SetActive(false);
             _gridView.CellsContainer.rotation = Quaternion.identity;
             UnsubscribeAll();
         }

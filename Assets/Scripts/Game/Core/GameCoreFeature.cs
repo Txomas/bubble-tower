@@ -1,4 +1,5 @@
 using Game.Core.Level.Runtime;
+using Game.Core.MainFlow;
 using Zenject.Helpers;
 
 namespace Game.Core
@@ -7,9 +8,14 @@ namespace Game.Core
     {
         protected override void OnFeatureEnabled()
         {
-            BindSingleton<PlayerProgressModel>();
+            BindSingleton<PlayerStatsModel>();
+
+            DeclareSignal<LevelChanged>();
+            DeclareSignal<CoinsChanged>();
+            DeclareSignal<HeartsChanged>();
             
             RuntimeLevelFeature.Install(Container);
+            MainFlowFeature.Install(Container);
         }
     }
 }

@@ -1,28 +1,87 @@
+using System.Collections.Generic;
+using Game.Popups;
+using Game.Saving;
 using Zenject;
 using Zenject.Helpers;
 
 namespace Game.Core.Level.Runtime
 {
-    public class LevelController : BaseController
+    public class LevelController : BaseController, ILevelManager
     {
         [Inject] private readonly LevelService _service;
         [Inject] private readonly LevelModel _model;
+        [Inject] private readonly PlayerStatsModel _playerStatsModel;
+        [Inject] private readonly IPopupsManager _popupsManager;
+        [Inject] private readonly SavingService _savingService;
+        private readonly List<BaseController> _levelControllers = new();
 
         protected override void OnInitialized()
         {
             CreateController<LevelGridController>();
-            CreateController<TowerController>();
-            CreateController<LevelInterfaceController>();
-            CreateController<LevelPlayerController>();
             
-            RestartLevel();
+            _levelControllers.Add(CreateController<TowerController>());
+            _levelControllers.Add(CreateController<LevelInterfaceController>());
+            _levelControllers.Add(CreateController<LevelPlayerController>());
+            
+            SetLevelControllersActive(false);
+            
+            var levelData = _service.GetCurrentLevelData();
+            _model.SetData(levelData);
+            
+            Subscribe<LevelStateChanged>(OnLevelStateChanged);
         }
 
-        private void RestartLevel()
+        public void StartLevel()
+        {
+            SetLevelControllersActive(true);
+            
+            _model.SetState(LevelState.Idle);
+        }
+
+        public void CompleteLevel()
+        {
+            _playerStatsModel.NextLevel();
+            SetLevelControllersActive(false);
+        }
+
+        public void FailLevel()
+        {
+            _playerStatsModel.FailLevel();
+            FinishLevel();
+        }
+        
+        private void FinishLevel()
+        {
+            SetLevelControllersActive(false);
+            _savingService.Save(_playerStatsModel);
+        }
+
+        public void RestartLevel()
         {
             var levelData = _service.GetCurrentLevelData();
             _model.SetData(levelData);
-            _model.SetState(LevelState.Idle);
+            StartLevel();
+        }
+        
+        private void SetLevelControllersActive(bool isActive)
+        {
+            foreach (var controller in _levelControllers)
+            {
+                controller.IsEnabled = isActive;
+            }
+        }
+        
+        private void OnLevelStateChanged(LevelStateChanged stateChanged)
+        {
+            switch (stateChanged.State)
+            {
+                case LevelState.Completed:
+                    _popupsManager.ShowPopup(PopupType.Win);
+                    break;
+                case LevelState.Failed:
+                    _popupsManager.ShowPopup(PopupType.Fail);
+                    break;
+            }
         }
     }
 }

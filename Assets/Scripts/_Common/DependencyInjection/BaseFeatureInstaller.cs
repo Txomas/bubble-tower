@@ -30,6 +30,11 @@ namespace Zenject.Helpers
             return Bind<T>().FromComponentInHierarchy().AsSingle();
         }
         
+        protected ConcreteIdArgConditionCopyNonLazyBinder BindInterfacesTo<T>()
+        {
+            return Container.BindInterfacesTo<T>().AsSingle();
+        }
+        
         protected ConcreteIdArgConditionCopyNonLazyBinder BindSingleton<T>()
         {
             return Bind<T>().AsSingle();
@@ -55,6 +60,12 @@ namespace Zenject.Helpers
             where TController : BaseController
         {
             return Bind<TController>().AsTransient();
+        }
+        
+        protected ArgConditionCopyNonLazyBinder BindChildControllerWithId<TInterface, TController>(object id) 
+            where TController : BaseController, TInterface
+        {
+            return Bind<TInterface>().WithId(id).To<TController>().AsTransient();
         }
         
         protected DeclareSignalIdRequireHandlerAsyncTickPriorityCopyBinder DeclareSignal<TSignal>()

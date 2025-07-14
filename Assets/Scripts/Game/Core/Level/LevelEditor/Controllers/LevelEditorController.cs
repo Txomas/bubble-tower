@@ -12,6 +12,7 @@ namespace Game.Core.Level.LevelEditor
     public class LevelEditorController : BaseController
     {
         [Inject] private readonly LevelEditorView _view;
+        [Inject] private readonly LevelGridView _gridView;
         [Inject] private readonly LevelEditorModel _model;
         [Inject] private readonly IGridService _gridService;
         [Inject] private readonly LevelDataService _levelDataManager;
@@ -48,6 +49,7 @@ namespace Game.Core.Level.LevelEditor
                 controller.IsEnabled = key == mode;
             }
             
+            _gridView.Tower.gameObject.SetActive(mode is LevelViewMode.Preview);
             _model.SetViewMode(mode);
         }
 

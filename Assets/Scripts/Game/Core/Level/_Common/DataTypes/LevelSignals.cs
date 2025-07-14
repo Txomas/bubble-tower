@@ -7,11 +7,13 @@ namespace Game.Core.Level
     {
         public Vector2Int Index { get; }
         public BubbleColor NewColor { get; }
-        
-        public BubbleChanged(Vector2Int index, BubbleColor newColor)
+        public bool IsDropped { get; }
+
+        public BubbleChanged(Vector2Int index, BubbleColor newColor, bool isDropped = false)
         {
             Index = index;
             NewColor = newColor;
+            IsDropped = isDropped;
         }
     }
 

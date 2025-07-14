@@ -91,9 +91,15 @@ namespace Game.Core.Level
         {
             if (_bubbles.TryGetValue(index, out var bubble))
             {
+                // TODO: play bubble destroy animation
                 Object.Destroy(bubble.gameObject);
                 _bubbles.Remove(index);
             }
+        }
+        
+        protected Transform GetBubbleTransform(Vector2Int index)
+        {
+            return _bubbles.TryGetValue(index, out var bubble) ? bubble.transform : null;
         }
         
         private Color GetColor(BubbleColor bubbleColor)

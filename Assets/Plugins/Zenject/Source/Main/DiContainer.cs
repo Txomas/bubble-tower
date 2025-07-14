@@ -871,14 +871,31 @@ namespace Zenject
         {
             return ResolveType(typeof(T));
         }
+        
+        public Type TryResolveTypeId<T>(object identifier)
+        {
+            return ResolveTypeId(typeof(T), identifier, true);
+        }
+        
+        public Type ResolveTypeId<T>(object identifier)
+        {
+            return ResolveTypeId(typeof(T), identifier);
+        }
 
         // Returns the concrete type that would be returned with Resolve(type)
         // without actually instantiating it
         // This is safe to use within installers
         public Type ResolveType(Type type)
         {
+            return ResolveTypeId(type, null);
+        }
+        
+        public Type ResolveTypeId(Type type, object identifier, bool isOptional = false)
+        {
             using (var context = ZenPools.SpawnInjectContext(this, type))
             {
+                context.Identifier = identifier;
+                context.Optional = isOptional;
                 return ResolveType(context);
             }
         }

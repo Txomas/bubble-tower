@@ -17,17 +17,16 @@ namespace Game.Core.Level.Runtime
         private BubbleView _playerBubble;
         private BubbleColor _currentColor;
 
-        protected override void OnInitialized()
+        protected override void OnEnabled()
         {
-            Subscribe<NewLevelGridSet>(CreatePlayerBubble);
             Subscribe<PointerTappedSignal>(OnPointerTap);
+            Subscribe<LevelStateChanged>(OnLevelStateChanged);
         }
 
-        private void CreatePlayerBubble()
+        protected override void OnDisabled()
         {
-            _currentColor = _service.GetNewPlayerBubbleColor();
-            _playerBubble = Object.Instantiate(_bubblesConfig.BubblePrefab, _gridView.PlayerBubbleContainer);
-            _playerBubble.Color = _bubblesConfig.GetBubbleColor(_currentColor);
+            UnsubscribeAll();
+            _playerBubble = null;
         }
         
         private void OnPointerTap(PointerTappedSignal signal)
@@ -41,8 +40,17 @@ namespace Game.Core.Level.Runtime
                     .OnComplete(() =>
                     {
                         _service.FinishShooting(_currentColor, shootIndex);
-                        CreatePlayerBubble();
                     });
+            }
+        }
+        
+        private void OnLevelStateChanged(LevelStateChanged stateChanged)
+        {
+            if (stateChanged.State == LevelState.Idle)
+            {
+                _currentColor = _service.GetNewPlayerBubbleColor();
+                _playerBubble = Object.Instantiate(_bubblesConfig.BubblePrefab, _gridView.PlayerBubbleContainer);
+                _playerBubble.Color = _bubblesConfig.GetBubbleColor(_currentColor);
             }
         }
     }

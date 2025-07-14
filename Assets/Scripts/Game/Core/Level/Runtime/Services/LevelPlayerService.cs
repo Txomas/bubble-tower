@@ -81,7 +81,18 @@ namespace Game.Core.Level.Runtime
                 }
             }
             
-            _model.SetState(LevelState.Idle);
+            if (_model.Bubbles.Count == 0)
+            {
+                _model.SetState(LevelState.Completed);
+            }
+            else if (_model.PlayersBubblesLeft == 0)
+            {
+                _model.SetState(LevelState.Failed);
+            }
+            else
+            {
+                _model.SetState(LevelState.Idle);
+            }
         }
     }
 }

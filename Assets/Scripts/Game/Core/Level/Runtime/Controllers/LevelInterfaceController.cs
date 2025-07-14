@@ -13,6 +13,17 @@ namespace Game.Core.Level.Runtime
             Subscribe<NewLevelGridSet>(UpdateBubblesCount);
             Subscribe<PlayerBubblesChanged>(UpdateBubblesCount);
         }
+        
+        protected override void OnEnabled()
+        {
+            UpdateBubblesCount();
+            _view.gameObject.SetActive(true);
+        }
+        
+        protected override void OnDisabled()
+        {
+            _view.gameObject.SetActive(false);
+        }
 
         private void UpdateBubblesCount()
         {

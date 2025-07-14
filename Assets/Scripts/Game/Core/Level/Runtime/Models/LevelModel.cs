@@ -26,6 +26,7 @@ namespace Game.Core.Level.Runtime
             }
             
             State = state;
+            _signalBus.Fire(new LevelStateChanged(state));
         }
     }
 }

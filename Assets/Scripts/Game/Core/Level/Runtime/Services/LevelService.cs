@@ -6,11 +6,11 @@ namespace Game.Core.Level.Runtime
     public class LevelService
     {
         [Inject] private readonly LevelsConfig _levelsConfig;
-        [Inject] private readonly PlayerProgressModel _playerProgressModel;
+        [Inject] private readonly PlayerStatsModel _playerStatsModel;
         
         public LevelData GetCurrentLevelData()
         {
-            var level = _playerProgressModel.Level;
+            var level = _playerStatsModel.Level;
             
             if (level < 0)
             {

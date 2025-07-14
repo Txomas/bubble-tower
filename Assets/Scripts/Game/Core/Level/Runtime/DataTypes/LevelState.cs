@@ -5,5 +5,7 @@ namespace Game.Core.Level.Runtime
         Unknown,
         Idle,
         Shooting,
+        Completed,
+        Failed,
     }
 }
