@@ -10,9 +10,7 @@ namespace Game.Core.Level.LevelEditor
 
             BindFromComponentInHierarchy<LevelEditorCameraView>();
             BindFromComponentInHierarchy<LevelEditorView>();
-
-            BindSingleton<LevelDataService>();
-
+            
             BindRootController<LevelEditorCameraController>();
             BindRootController<LevelEditorController>();
             BindChildControllerWithId<IActivatable, LevelEditorPaintingController>(LevelViewMode.Editor);

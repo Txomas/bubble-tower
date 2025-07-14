@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,15 +8,9 @@ using UnityEngine;
 
 namespace Game.Core.Level.LevelEditor
 {
-    public class LevelDataService
+    public static class LevelDataUtil
     {
-        public LevelData CreateNewLevelData()
-        {
-            return ScriptableObject.CreateInstance<LevelData>();
-        }
-
-
-        public string SaveLevelData(IReadOnlyDictionary<Vector2Int, BubbleData> data)
+        public static string SaveNewLevelData(IReadOnlyDictionary<Vector2Int, BubbleData> data)
         {
             if (!AssetDatabase.IsValidFolder(ConfigsPaths.LevelsFolder))
             {
@@ -38,7 +33,7 @@ namespace Game.Core.Level.LevelEditor
             return levelName;
         }
 
-        public void SaveLevelData(string levelName, IReadOnlyDictionary<Vector2Int, BubbleData> levelData)
+        public static void SaveLevelData(string levelName, IReadOnlyDictionary<Vector2Int, BubbleData> levelData)
         {
             var data = LoadLevelData(levelName);
             
@@ -51,7 +46,7 @@ namespace Game.Core.Level.LevelEditor
             data.SetBubbles(levelData);
         }
 
-        public LevelData LoadLevelData(string levelName)
+        public static LevelData LoadLevelData(string levelName)
         {
             var assetPath = GetLevelAssetPath(levelName);
             var levelData = AssetDatabase.LoadAssetAtPath<LevelData>(assetPath);
@@ -65,12 +60,12 @@ namespace Game.Core.Level.LevelEditor
             return levelData;
         }
         
-        private string GetLevelAssetPath(string levelName)
+        private static string GetLevelAssetPath(string levelName)
         {
             return ConfigsPaths.LevelsFolder + levelName + ConfigsPaths.AssetExtension;
         }
 
-        public List<string> GetAvailableLevelNames()
+        private static List<string> GetAvailableLevelNames()
         {
             if (!AssetDatabase.IsValidFolder(ConfigsPaths.LevelsFolder))
             {
@@ -85,4 +80,5 @@ namespace Game.Core.Level.LevelEditor
                 .ToList();
         }
     }
-} 
+}
+#endif

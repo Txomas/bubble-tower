@@ -16,7 +16,7 @@ namespace Game.Core.Level.LevelEditor
             {
                 var x = col * CellSize + (row % 2 == 1 ? CellSize * 0.5f : 0f);
                 var z = row * HeightStep;
-                return new Vector3(x, 0f, z);
+                return new Vector3(x, 0f, -z);
             }
             else
             {
@@ -29,7 +29,7 @@ namespace Game.Core.Level.LevelEditor
             if (_model.ViewMode == LevelViewMode.Editor)
             {
                 var localPos = GetLocalPoint(worldPos);
-                var row = Mathf.RoundToInt(localPos.z / HeightStep);
+                var row = Mathf.RoundToInt(-localPos.z / HeightStep);
                 
                 var offset = row % 2 == 1 ? CellSize * 0.5f : 0f;
                 var col = Mathf.RoundToInt((localPos.x - offset) / CellSize);

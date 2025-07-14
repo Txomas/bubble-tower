@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Common.Extensions;
 using Game.Core.Bubbles;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +15,6 @@ namespace Game.Core.Level.LevelEditor
         [Inject] private readonly LevelGridView _gridView;
         [Inject] private readonly LevelEditorModel _model;
         [Inject] private readonly IGridService _gridService;
-        [Inject] private readonly LevelDataService _levelDataManager;
         private readonly Dictionary<LevelViewMode, IActivatable> _controllersByMode = new();
         private string _currentLevelName;
 
@@ -36,13 +34,15 @@ namespace Game.Core.Level.LevelEditor
             _view.SetViewModeOptions(Enum.GetNames(typeof(LevelViewMode)));
             
             _view.ViewModeChanged.AddListener(OnViewModeChanged);
-            
+
+#if UNITY_EDITOR
             _view.RegenerateButtonClicked.AddListener(RegenerateGrid);
             _view.SaveButtonClicked.AddListener(SaveLevel);
             _view.LoadButtonClicked.AddListener(LoadLevel);
             
             OnViewModeChanged(0);
             RegenerateGrid();
+#endif
         }
 
         private void OnViewModeChanged(int value)
@@ -58,6 +58,7 @@ namespace Game.Core.Level.LevelEditor
             _model.SetViewMode(mode);
         }
 
+#if UNITY_EDITOR
         private void RegenerateGrid()
         {
             if (ConfirmReset())
@@ -80,12 +81,12 @@ namespace Game.Core.Level.LevelEditor
             
             if (string.IsNullOrEmpty(_currentLevelName))
             {
-                _currentLevelName = _levelDataManager.SaveLevelData(_model.Bubbles);
+                _currentLevelName = LevelDataUtil.SaveNewLevelData(_model.Bubbles);
                 EditorUtility.DisplayDialog("Success", $"Level saved as: {_currentLevelName}", "OK");
             }
             else
             {
-                _levelDataManager.SaveLevelData(_currentLevelName, _model.Bubbles);
+                LevelDataUtil.SaveLevelData(_currentLevelName, _model.Bubbles);
                 EditorUtility.DisplayDialog("Success", $"Level updated: {_currentLevelName}", "OK");
             }
         }
@@ -105,7 +106,7 @@ namespace Game.Core.Level.LevelEditor
             }
             
             var levelName = Path.GetFileNameWithoutExtension(levelPath);
-            var loadedLevelData = _levelDataManager.LoadLevelData(levelName);
+            var loadedLevelData = LevelDataUtil.LoadLevelData(levelName);
             
             if (loadedLevelData != null)
             {
@@ -141,5 +142,6 @@ namespace Game.Core.Level.LevelEditor
                     return false;
             }
         }
+#endif
     }
 }

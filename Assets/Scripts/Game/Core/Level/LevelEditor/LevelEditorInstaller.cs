@@ -9,10 +9,7 @@ namespace Game.Core.Level.LevelEditor
         {
             base.InstallBindings();
             InputFeature.Install(Container);
-
-#if UNITY_EDITOR
             LevelEditorFeature.Install(Container);
-#endif
         }
     }
 }
