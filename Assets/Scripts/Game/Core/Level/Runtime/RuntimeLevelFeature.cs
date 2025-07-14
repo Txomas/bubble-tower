@@ -1,3 +1,4 @@
+using Game.Core.Level.Runtime.Combo;
 using UnityEngine;
 
 namespace Game.Core.Level.Runtime
@@ -13,6 +14,7 @@ namespace Game.Core.Level.Runtime
             
             BindSingleton<LevelService>();
             BindSingleton<LevelPlayerService>();
+            BindInterfacesTo<DefaultPlayerBubbleDataProvider>();
             
             BindRootController<LevelController>();
             BindChildController<LevelInterfaceController>();
@@ -21,6 +23,9 @@ namespace Game.Core.Level.Runtime
 
             DeclareSignal<PlayerBubblesChanged>();
             DeclareSignal<LevelStateChanged>();
+            DeclareSignal<SuccessfullyShoot>();
+            
+            ComboFeature.Install(Container);
         }
     }
 }

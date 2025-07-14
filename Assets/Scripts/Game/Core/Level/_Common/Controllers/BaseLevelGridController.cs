@@ -26,8 +26,6 @@ namespace Game.Core.Level
             _view.BubbleAdded += AddBubble;
         }
         
-        protected abstract void OnBubbleChanged(BubbleChanged changedData);
-
         protected void Rebuild()
         {
             foreach (var bubble in _bubbles.Values)
@@ -46,23 +44,22 @@ namespace Game.Core.Level
                 {
                     var indexes = new Vector2Int(c, r);
                     
-                    if (ShouldCreateBubble(indexes, out var color))
+                    if (ShouldCreateBubble(indexes, out var data))
                     {
-                        CreateBubble(indexes, color);
+                        CreateBubble(indexes, data);
                     }
                 }
             }
         }
 
-        protected virtual bool ShouldCreateBubble(Vector2Int index, out BubbleColor color)
+        protected virtual bool ShouldCreateBubble(Vector2Int index, out BubbleData data)
         {
-            return _model.Bubbles.TryGetValue(index, out color);
+            return _model.Bubbles.TryGetValue(index, out data);
         }
 
-        private void CreateBubble(Vector2Int index, BubbleColor bubbleColor)
+        private void CreateBubble(Vector2Int index, BubbleData data)
         {
-            var bubble = Object.Instantiate(_bubblesConfig.BubblePrefab);
-            bubble.Color = GetColor(bubbleColor);
+            var bubble = _bubblesConfig.CreateBubble(data);
             
             _view.AddBubble(bubble, index);
             bubble.transform.localPosition = _service.IndexToLocalPos(index);
@@ -75,15 +72,15 @@ namespace Game.Core.Level
             _bubbles.Add(index, bubbleView);
         }
 
-        protected void SetBubbleColor(Vector2Int index, BubbleColor color)
+        private void OnBubbleChanged(BubbleChanged changedData)
         {
-            if (_bubbles.TryGetValue(index, out var bubble))
+            if (_bubbles.TryGetValue(changedData.Index, out var bubble))
             {
-                bubble.Color = GetColor(color);
+                _bubblesConfig.SetBubbleColor(bubble, changedData.Data);
             }
             else
             {
-                Debug.LogWarning($"Bubble at index {index} not found.");
+                Debug.LogWarning($"Bubble at index {changedData.Index} not found.");
             }
         }
         
@@ -100,11 +97,6 @@ namespace Game.Core.Level
         protected Transform GetBubbleTransform(Vector2Int index)
         {
             return _bubbles.TryGetValue(index, out var bubble) ? bubble.transform : null;
-        }
-        
-        private Color GetColor(BubbleColor bubbleColor)
-        {
-            return _bubblesConfig.GetBubbleColor(bubbleColor);
         }
     }
 }

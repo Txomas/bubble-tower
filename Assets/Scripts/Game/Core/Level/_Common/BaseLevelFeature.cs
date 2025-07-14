@@ -19,6 +19,7 @@ namespace Game.Core.Level
 
             DeclareSignal<BubbleChanged>();
             DeclareSignal<NewLevelGridSet>();
+            DeclareSignal<BubbleRemoved>();
         }
     }
 }

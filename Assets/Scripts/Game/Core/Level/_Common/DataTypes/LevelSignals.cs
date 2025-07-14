@@ -6,13 +6,23 @@ namespace Game.Core.Level
     public struct BubbleChanged
     {
         public Vector2Int Index { get; }
-        public BubbleColor NewColor { get; }
-        public bool IsDropped { get; }
+        public BubbleData Data { get; }
 
-        public BubbleChanged(Vector2Int index, BubbleColor newColor, bool isDropped = false)
+        public BubbleChanged(Vector2Int index, BubbleData data)
         {
             Index = index;
-            NewColor = newColor;
+            Data = data;
+        }
+    }
+    
+    public struct BubbleRemoved
+    {
+        public Vector2Int Index { get; }
+        public bool IsDropped { get; }
+
+        public BubbleRemoved(Vector2Int index, bool isDropped = false)
+        {
+            Index = index;
             IsDropped = isDropped;
         }
     }

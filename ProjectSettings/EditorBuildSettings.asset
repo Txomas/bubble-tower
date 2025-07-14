@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LevelEditor.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/Main.unity
+    guid: 248dc025f505f134d9fd9c18644c0e0f
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 60fd42adc9a2a0e46a2cb498a166ac4d, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 4b983650b47ca55429c6c83640379aaa, type: 2}

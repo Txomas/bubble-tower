@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a72ff7d622344ebaa5050bd1110f16b0, type: 3}
   m_Name: BubblesConfig
   m_EditorClassIdentifier: 
-  BubblePrefab: {fileID: 8824412743923223781, guid: 867b2e0b02c448d4f9e40e5a8cd592d2, type: 3}
+  _prefabs:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 8824412743923223781, guid: 867b2e0b02c448d4f9e40e5a8cd592d2, type: 3}
+    - Key: 4
+      Value: {fileID: 8824412743923223781, guid: ebde411f846527a4592638024e499848, type: 3}
+  _noColorTypes: 0200000003000000
   _colors:
     _serializedList:
     - Key: 0

@@ -164,7 +164,7 @@ namespace Game.Core.Level
             }
         }
         
-        public HashSet<Vector2Int> GetCluster(Vector2Int startIndex, BubbleColor color)
+        public HashSet<Vector2Int> GetColorCluster(Vector2Int startIndex, BubbleColor color)
         {
             var result = new HashSet<Vector2Int>();
             var queue = new Queue<Vector2Int>();
@@ -180,8 +180,8 @@ namespace Game.Core.Level
                 foreach (var neighbor in neighbors)
                 {
                     if (!result.Contains(neighbor) && 
-                        _levelModel.Bubbles.TryGetValue(neighbor, out var bubbleColor) && 
-                        bubbleColor == color)
+                        _levelModel.Bubbles.TryGetValue(neighbor, out var bubbleData) && 
+                        bubbleData.Color == color)
                     {
                         result.Add(neighbor);
                         queue.Enqueue(neighbor);
@@ -192,5 +192,10 @@ namespace Game.Core.Level
             return result;
         }
 
+        public IEnumerable<Vector2Int> GetNeighborsCluster(Vector2Int index)
+        {
+            var neighbors = GetNeighbors(index.x, index.y);
+            return neighbors.Where(neighbor => _levelModel.HasBubble(neighbor));
+        }
     }
 }

@@ -1,5 +1,4 @@
 using Common.Attributes;
-using Game.Core.Bubbles;
 using UnityEditor;
 using UnityEngine;
 

@@ -19,11 +19,6 @@ namespace Game.Popups
         private WaitUntil _waitUntilEmpty;
         public WaitUntil WaitUntilEmpty => _waitUntilEmpty ??= new WaitUntil(IsEmpty);
 
-        protected override void OnInitialized()
-        {
-            ShowPopup(PopupType.Win);
-        }
-
         public void HidePopups()
         {
             foreach (var controller in _popupsQueue)

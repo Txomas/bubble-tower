@@ -5,18 +5,20 @@ using UnityEngine;
 
 namespace Game.Core.Level
 {
-    [CreateAssetMenu(fileName = "LevelData", menuName = ConfigsPaths.Configs + "LevelData")]
     public class LevelData : ScriptableObject
     {
         public int PlayersBubblesCount;
         
-        [SerializeField] private SerializedDictionary<Vector2Int, BubbleColor> _coloredCells = new();
+        [SerializeField] private SerializedDictionary<Vector2Int, BubbleData> _bubbles = new();
 
-        public IReadOnlyDictionary<Vector2Int, BubbleColor> ColoredCells => _coloredCells;
+        public IReadOnlyDictionary<Vector2Int, BubbleData> Bubbles => _bubbles;
 
-        public void SetColoredCells(IReadOnlyDictionary<Vector2Int, BubbleColor> coloredCells)
+#if UNITY_EDITOR
+        public void SetBubbles(IReadOnlyDictionary<Vector2Int, BubbleData> bubbles)
         {
-            _coloredCells = new SerializedDictionary<Vector2Int, BubbleColor>(coloredCells);
+            _bubbles = new SerializedDictionary<Vector2Int, BubbleData>(bubbles);
+            UnityEditor.EditorUtility.SetDirty(this);
         }
+#endif
     }
 }
