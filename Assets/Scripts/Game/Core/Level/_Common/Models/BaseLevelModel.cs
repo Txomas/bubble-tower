@@ -39,15 +39,7 @@ namespace Game.Core.Level
         
         public void ChangeBubbleColor(Vector2Int index, BubbleData data)
         {
-            if (data.Color is BubbleColor.None)
-            {
-                RemoveBubble(index, false);
-            }
-            else
-            {
-                AddBubble(index, data);
-            }
-
+            AddBubble(index, data);
             _signalBus.Fire(new BubbleChanged(index, data));
         }
         

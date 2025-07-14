@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Game.Core.Bubbles;
 using UnityEditor;
 using UnityEngine;
@@ -30,7 +31,8 @@ namespace Game.Core.Level.LevelEditor
                 _controllersByMode.Add(mode, controller);
             }
             
-            _view.SetColorOptions(Enum.GetNames(typeof(BubbleColor)));
+            var anyName = BubbleColor.Any.ToString();
+            _view.SetColorOptions(Enum.GetNames(typeof(BubbleColor)).Where(name => name != anyName));
             _view.SetViewModeOptions(Enum.GetNames(typeof(LevelViewMode)));
             
             _view.ViewModeChanged.AddListener(OnViewModeChanged);
@@ -63,6 +65,7 @@ namespace Game.Core.Level.LevelEditor
         {
             if (ConfirmReset())
             {
+                _currentLevelName = string.Empty;
                 _model.SetData(new Dictionary<Vector2Int, BubbleData>());
             }
         }

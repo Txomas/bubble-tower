@@ -15,6 +15,7 @@ namespace Game.Input
             DeclareOptionalSignal<NextClickedSignal>();
             DeclareOptionalSignal<PreviousClickedSignal>();
             DeclareOptionalSignal<MoveSignal>();
+            DeclareOptionalSignal<SecondaryClickedSignal>();
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Game.Core.Level.LevelEditor
         public Button.ButtonClickedEvent LoadButtonClicked => _loadButton.onClick;
         public TMP_Dropdown.DropdownEvent ViewModeChanged => _viewModeDropdown.onValueChanged;
         
+        public int ColorsOptionsCount => _colorDropdown.options.Count;
         public int SelectedColor => _colorDropdown.value;
         
         public void SetColorOptions(IEnumerable<string> options)

@@ -2,7 +2,7 @@ namespace Game.Core.Bubbles
 {
     public enum BubbleColor
     {
-        None, 
+        Any, 
         Red, 
         Green, 
         Blue, 

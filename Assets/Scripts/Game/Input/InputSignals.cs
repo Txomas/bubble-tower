@@ -51,4 +51,14 @@ namespace Game.Input
     public struct PreviousClickedSignal
     {
     }
+    
+    public struct SecondaryClickedSignal
+    {
+        public Vector2 ScreenPosition { get; }
+        
+        public SecondaryClickedSignal(Vector2 screenPosition)
+        {
+            ScreenPosition = screenPosition;
+        }
+    }
 }

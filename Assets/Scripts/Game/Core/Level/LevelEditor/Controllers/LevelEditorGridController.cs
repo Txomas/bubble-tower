@@ -13,6 +13,7 @@ namespace Game.Core.Level.LevelEditor
             base.OnInitialized();
             
             Subscribe<LevelViewModeChanged>(Rebuild);
+            Subscribe<BubbleRemoved>(OnBubbleRemoved);
         }
 
         protected override bool ShouldCreateBubble(Vector2Int indexes, out BubbleData data)
@@ -24,12 +25,16 @@ namespace Game.Core.Level.LevelEditor
 
             if (_model.ViewMode is LevelViewMode.Editor)
             {
-                data = new BubbleData(BubbleType.Default, BubbleColor.None);
+                data = new BubbleData(BubbleType.Default, BubbleColor.Any);
                 return true;
             }
 
             return false;
-
+        }
+        
+        private void OnBubbleRemoved(BubbleRemoved removed)
+        {
+            UpdateBubbleColor(removed.Index, new BubbleData(BubbleType.Default, BubbleColor.Any));
         }
     }
 }

@@ -74,13 +74,18 @@ namespace Game.Core.Level
 
         private void OnBubbleChanged(BubbleChanged changedData)
         {
-            if (_bubbles.TryGetValue(changedData.Index, out var bubble))
+            UpdateBubbleColor(changedData.Index, changedData.Data);
+        }
+        
+        protected void UpdateBubbleColor(Vector2Int index, BubbleData data)
+        {
+            if (_bubbles.TryGetValue(index, out var bubble))
             {
-                _bubblesConfig.SetBubbleColor(bubble, changedData.Data);
+                _bubblesConfig.SetBubbleColor(bubble, data);
             }
             else
             {
-                Debug.LogWarning($"Bubble at index {changedData.Index} not found.");
+                Debug.LogWarning($"Bubble at index {index} not found.");
             }
         }
         

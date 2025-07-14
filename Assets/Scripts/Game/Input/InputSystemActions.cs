@@ -100,6 +100,15 @@ namespace Game.Input
                     ""processors"": """",
                     ""interactions"": ""Tap"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""658fd11c-576e-48dd-8f9d-e840e0c03133"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -331,6 +340,17 @@ namespace Game.Input
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60dd1e7f-f0ff-49be-a660-7fd491f58a59"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1400,6 +1420,7 @@ namespace Game.Input
             m_Gameplay_Scroll = m_Gameplay.FindAction("Scroll", throwIfNotFound: true);
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_Tap = m_Gameplay.FindAction("Tap", throwIfNotFound: true);
+            m_Gameplay_SecondaryClick = m_Gameplay.FindAction("SecondaryClick", throwIfNotFound: true);
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
@@ -1492,6 +1513,7 @@ namespace Game.Input
         private readonly InputAction m_Gameplay_Scroll;
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_Tap;
+        private readonly InputAction m_Gameplay_SecondaryClick;
         public struct GameplayActions
         {
             private @InputSystemActions m_Wrapper;
@@ -1504,6 +1526,7 @@ namespace Game.Input
             public InputAction @Scroll => m_Wrapper.m_Gameplay_Scroll;
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
             public InputAction @Tap => m_Wrapper.m_Gameplay_Tap;
+            public InputAction @SecondaryClick => m_Wrapper.m_Gameplay_SecondaryClick;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1537,6 +1560,9 @@ namespace Game.Input
                 @Tap.started += instance.OnTap;
                 @Tap.performed += instance.OnTap;
                 @Tap.canceled += instance.OnTap;
+                @SecondaryClick.started += instance.OnSecondaryClick;
+                @SecondaryClick.performed += instance.OnSecondaryClick;
+                @SecondaryClick.canceled += instance.OnSecondaryClick;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -1565,6 +1591,9 @@ namespace Game.Input
                 @Tap.started -= instance.OnTap;
                 @Tap.performed -= instance.OnTap;
                 @Tap.canceled -= instance.OnTap;
+                @SecondaryClick.started -= instance.OnSecondaryClick;
+                @SecondaryClick.performed -= instance.OnSecondaryClick;
+                @SecondaryClick.canceled -= instance.OnSecondaryClick;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -1865,6 +1894,7 @@ namespace Game.Input
             void OnScroll(InputAction.CallbackContext context);
             void OnMove(InputAction.CallbackContext context);
             void OnTap(InputAction.CallbackContext context);
+            void OnSecondaryClick(InputAction.CallbackContext context);
         }
         public interface IPlayerActions
         {

@@ -59,6 +59,13 @@ namespace Game.Input
                     FireSignal(new PointerTappedSignal(screenPos));
                 }
             }
+            
+            if (_gameplayActions.SecondaryClick.WasPerformedThisFrame() && 
+                !EventSystem.current.IsPointerOverGameObject())
+            {
+                var screenPos = _gameplayActions.Position.ReadValue<Vector2>();
+                FireSignal(new SecondaryClickedSignal(screenPos));
+            }
         }
     }
 }
