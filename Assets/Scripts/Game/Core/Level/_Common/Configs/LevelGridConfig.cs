@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Core.Level
 {
-    [CreateAssetMenu(fileName = nameof(LevelGridConfig), menuName = ConfigsPaths.Game + nameof(LevelGridConfig))]
+    [CreateAssetMenu(fileName = nameof(LevelGridConfig), menuName = ConfigsPaths.Gameplay + nameof(LevelGridConfig))]
     public class LevelGridConfig : ScriptableObject
     {
         [Tooltip("Height between hex cells: CellSize * HeightStepFactor.")]
@@ -15,6 +15,9 @@ namespace Game.Core.Level
         [ReadOnly] public float Radius = 5f;
         [CallOnChange(nameof(RecalculateRadius))] public int Columns;
         public int Rows = 10;
+        public int MaxAdditionalRows = 5;
+
+        public float CellsContainerMoveSpeed = 20f;
         
         public float HeightStep => CellSize * HeightStepFactor;
 

@@ -14,7 +14,7 @@ namespace Game.Core.Level.LevelEditor
         {
             if (!AssetDatabase.IsValidFolder(ConfigsPaths.LevelsFolder))
             {
-                AssetDatabase.CreateFolder(ConfigsPaths.Assets + ConfigsPaths.Game.TrimEnd('/'), nameof(ConfigsPaths.Levels));
+                AssetDatabase.CreateFolder(ConfigsPaths.Assets + ConfigsPaths.Gameplay.TrimEnd('/'), nameof(ConfigsPaths.Levels));
             }
 
             var levelName = "Level_" + GetAvailableLevelNames().Count.ToString("D2");

@@ -9,6 +9,7 @@ namespace Game.Ads.FakeAds
 	{
 		private const float SkipDelay = 5f;
 		
+		private bool _isAdsRewarded;
 		private Action<bool> _callback;
 
 		protected override void SetData(Action<bool> popupData)
@@ -18,6 +19,7 @@ namespace Game.Ads.FakeAds
 
 		protected override void OnPopupActivated()
 		{
+			_isAdsRewarded = false;
 			_view.SetSkipButtonEnabled(Application.isEditor);
 			StartCoroutine(TimerCoroutine());
 		}
@@ -26,15 +28,14 @@ namespace Game.Ads.FakeAds
 		{
 			base.OnCloseClicked();
 			
-			_callback?.Invoke(true);
-			_callback = null;
+			_isAdsRewarded = true;
 		}
 
 		protected override void OnPopupHidden()
 		{
 			base.OnPopupHidden();
 			
-			_callback?.Invoke(false);
+			_callback?.Invoke(_isAdsRewarded);
 		}
 
 		private IEnumerator TimerCoroutine()
@@ -43,7 +44,7 @@ namespace Game.Ads.FakeAds
 
 			while (seconds < SkipDelay)
 			{
-				seconds += Time.unscaledDeltaTime;
+				seconds += Time.deltaTime;
 				_view.SetTimer(Mathf.CeilToInt(SkipDelay - seconds));
 				yield return null;
 			}

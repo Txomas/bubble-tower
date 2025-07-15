@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Core.Level
 {
-    [CreateAssetMenu(fileName = nameof(LevelsConfig), menuName = ConfigsPaths.Game + nameof(LevelsConfig))]
+    [CreateAssetMenu(fileName = nameof(LevelsConfig), menuName = ConfigsPaths.Gameplay + nameof(LevelsConfig))]
     public class LevelsConfig : ScriptableObject
     {
         [SerializeField] private List<LevelData> _levels;
@@ -20,7 +20,5 @@ namespace Game.Core.Level
             
             return _levels[level];
         }
-        
-        // TODO: add validation
     }
 }

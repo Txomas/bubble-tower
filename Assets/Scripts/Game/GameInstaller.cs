@@ -1,3 +1,5 @@
+using System;
+using DG.Tweening;
 using Game.Ads;
 using Game.Core;
 using Game.Input;
@@ -9,6 +11,11 @@ namespace Game
 {
     public class GameInstaller : BaseMonoInstaller
     {
+        private void Awake()
+        {
+            DOTween.SetTweensCapacity(700, 50);
+        }
+
         public override void InstallBindings()
         {
             base.InstallBindings();

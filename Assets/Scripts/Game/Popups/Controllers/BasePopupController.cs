@@ -34,7 +34,7 @@ namespace Game.Popups
 		{
 			Type = type;
 			_view = (T) view;
-			view.gameObject.SetActive(false);
+			view.HideInstantly();
 			_view.CloseClicked += OnCloseClicked;
 			OnViewCreated();
 		}

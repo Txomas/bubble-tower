@@ -57,17 +57,10 @@ namespace Game.Ads
                 {
                     if (isSuccess)
                     {
-                        StartCoroutine(InvokeSuccessCoroutine());
+                        Success?.Invoke();
                     }
                 });	
             }
-        }
-
-        private IEnumerator InvokeSuccessCoroutine()
-        {
-            yield return new WaitWhile(() => Time.timeScale == 0f);
-            
-            Success?.Invoke();
         }
     }
 }

@@ -8,11 +8,9 @@ namespace Game.Saving
     {
         [Inject] private readonly SavingService _savingService;
         
-        protected virtual SavingCategory SavingCategory => SavingCategory.Undefined;
-
         public void Initialize()
         {
-            _savingService.AddSavableObject(this, GetType().Name, SavingCategory);
+            _savingService.AddSavableObject(this, GetType().Name);
         }
     }
 }

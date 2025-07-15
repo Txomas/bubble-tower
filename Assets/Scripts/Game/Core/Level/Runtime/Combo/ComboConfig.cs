@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Core.Level.Combo
 {
-    [CreateAssetMenu(fileName = nameof(ComboConfig), menuName = ConfigsPaths.Game + nameof(ComboConfig))]
+    [CreateAssetMenu(fileName = nameof(ComboConfig), menuName = ConfigsPaths.Features + nameof(ComboConfig))]
     public class ComboConfig : ScriptableObject
     {
         [SerializeField] private float _comboResetTime = 1f;
@@ -24,7 +24,7 @@ namespace Game.Core.Level.Combo
         
         public BubbleType GetBubbleType(int streak)
         {
-            return streak % _bonusBubbleEveryX != 0 ? BubbleType.Default : _bonusBubbleType;
+            return streak == 0 || streak % _bonusBubbleEveryX != 0 ? BubbleType.Default : _bonusBubbleType;
         }
         
         [Space]

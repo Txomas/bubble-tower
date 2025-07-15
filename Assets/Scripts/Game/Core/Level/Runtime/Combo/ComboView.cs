@@ -18,10 +18,5 @@ namespace Game.Core.Level.Runtime.Combo
         {
             _comboText.color = color;
         }
-        
-        public void SetTextAlpha(float alpha)
-        {
-            _comboText.alpha = alpha;
-        }
     }
 }

@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 6227035649813571959}
   - component: {fileID: 8268326383362251539}
   - component: {fileID: 7977889327783342625}
+  - component: {fileID: 6167550748748928096}
   m_Layer: 5
-  m_Name: DebugButtonText
+  m_Name: ButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,6 +123,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6167550748748928096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099212781210407542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80affef0294c4867a049a0f9b35701c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 7977889327783342625}
+  _text: {fileID: 3476539644736901389}
 --- !u!1 &5141203927190470518
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +206,8 @@ MonoBehaviour:
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 82baf1e2dba544fc3b521e341c2d65f1, type: 2}
-  m_sharedMaterial: {fileID: -213409736064387872, guid: 82baf1e2dba544fc3b521e341c2d65f1, type: 2}
+  m_sharedMaterial: {fileID: -213409736064387872, guid: 82baf1e2dba544fc3b521e341c2d65f1,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

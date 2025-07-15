@@ -12,5 +12,6 @@ namespace Game.Core.Level
         bool TryGetFurthestFreeCell(Vector3 origin, Vector3 target, out Vector2Int cellIndex);
         HashSet<Vector2Int> GetColorCluster(Vector2Int startIndex, BubbleColor color);
         IEnumerable<Vector2Int> GetNeighborsCluster(Vector2Int index);
+        float GetMaxGridHeight();
     }
 }

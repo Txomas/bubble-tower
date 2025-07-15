@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Game.Popups
 {
-    public abstract class BasePopupView : HidableObject
+    public abstract class BasePopupView : VisibilityAnimator
     {
         public event Action CloseClicked;
 

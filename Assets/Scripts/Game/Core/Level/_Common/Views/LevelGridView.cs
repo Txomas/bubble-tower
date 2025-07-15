@@ -10,6 +10,7 @@ namespace Game.Core.Level
         
         [SerializeField] private Transform _cellsContainer;
         [SerializeField] private Transform _playerBubbleContainer;
+        [SerializeField] private ParticleSystem _shootEffect;
         [SerializeField] private Transform _tower;
 
         public Transform CellsContainer => _cellsContainer;
@@ -21,6 +22,11 @@ namespace Game.Core.Level
             bubble.GridIndex = index;
             bubble.transform.SetParent(_cellsContainer, true);
             BubbleAdded?.Invoke(bubble);
+        }
+        
+        public void PlayShootEffect()
+        {
+            _shootEffect.Play();
         }
     }
 }

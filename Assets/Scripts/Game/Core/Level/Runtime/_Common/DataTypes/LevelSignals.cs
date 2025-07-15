@@ -14,7 +14,17 @@ namespace Game.Core.Level.Runtime
         }
     }
     
-    public struct SuccessfullyShoot
+    public struct ShotFinished
+    {
+        public bool IsSuccessful { get; }
+        
+        public ShotFinished(bool isSuccessful)
+        {
+            IsSuccessful = isSuccessful;
+        }
+    }
+    
+    public struct LevelFinished
     {
     }
 }

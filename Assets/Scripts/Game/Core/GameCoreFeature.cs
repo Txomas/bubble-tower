@@ -8,11 +8,11 @@ namespace Game.Core
     {
         protected override void OnFeatureEnabled()
         {
-            BindSingleton<PlayerStatsModel>();
+            BindSingletonAndInterfaces<PlayerStatsModel>();
 
             DeclareSignal<LevelChanged>();
-            DeclareSignal<CoinsChanged>();
-            DeclareSignal<HeartsChanged>();
+            DeclareOptionalSignal<CoinsChanged>();
+            DeclareOptionalSignal<HeartsChanged>();
             
             RuntimeLevelFeature.Install(Container);
             MainFlowFeature.Install(Container);

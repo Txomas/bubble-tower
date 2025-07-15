@@ -7,7 +7,7 @@ namespace Game.Core.Level
 {
     public class LevelData : ScriptableObject
     {
-        public int PlayersBubblesCount;
+        public int PlayersBubblesCount = 40;
         
         [SerializeField] private SerializedDictionary<Vector2Int, BubbleData> _bubbles = new();
 

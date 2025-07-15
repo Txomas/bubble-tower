@@ -13,15 +13,20 @@ MonoBehaviour:
   m_Name: ConfigsContainer
   m_EditorClassIdentifier: 
   _configsInFolders:
-  - {fileID: 11400000, guid: fad55a2c13a8a574b86ee7fc9e50b5cc, type: 2}
-  - {fileID: 11400000, guid: da89b35cfcd89f343aab973f909f7ca8, type: 2}
   - {fileID: 11400000, guid: b71ac7d65178da344b9e36537c295c12, type: 2}
+  - {fileID: 11400000, guid: da89b35cfcd89f343aab973f909f7ca8, type: 2}
   - {fileID: 11400000, guid: 93c706a861cc622458b7db9435fe4dad, type: 2}
   - {fileID: 11400000, guid: da994aaa4d60e084e863076e578193de, type: 2}
   - {fileID: 11400000, guid: 45956440e24995649aef796cbe5b353b, type: 2}
-  - {fileID: 11400000, guid: 3607847cd477f9144b0ca8b9866e4741, type: 2}
   - {fileID: 11400000, guid: be240a5e456deda4eab8142b85ae824e, type: 2}
+  - {fileID: 11400000, guid: 48b2cb4b97fae624d813b60ff291011c, type: 2}
+  - {fileID: 11400000, guid: fad55a2c13a8a574b86ee7fc9e50b5cc, type: 2}
+  - {fileID: 11400000, guid: 3607847cd477f9144b0ca8b9866e4741, type: 2}
   _folders:
   - {fileID: 102900000, guid: 63182cdb43d05854091f076167050118, type: 3}
+  - {fileID: 102900000, guid: 15b5417999b346d45b7d22e88bcd5d3c, type: 3}
+  - {fileID: 102900000, guid: 3d3f6dc6c1182474da380a729fe7043a, type: 3}
   _foldersPaths:
-  - Assets/Configs/Game
+  - Assets/Configs/Gameplay
+  - Assets/Configs/AssetsRefs
+  - Assets/Configs/Gameplay/Features

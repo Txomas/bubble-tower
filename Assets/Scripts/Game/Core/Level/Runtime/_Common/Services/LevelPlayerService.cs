@@ -1,3 +1,4 @@
+using System.Linq;
 using Game.Core.Bubbles;
 using UnityEngine;
 using Zenject;
@@ -12,6 +13,7 @@ namespace Game.Core.Level.Runtime
         [Inject] private readonly LevelGridView _gridView;
         [Inject] private readonly ShootingConfig _shootingConfig;
         [Inject] private readonly SignalBus _signalBus;
+        [Inject] private readonly BubblesConfig _bubblesConfig;
 
         public bool TryShootBubble(Vector2 clickPosition, out Vector2Int shootIndex, out Vector3 shootTarget)
         {
@@ -33,9 +35,6 @@ namespace Game.Core.Level.Runtime
 
             var tapWorldPos = hit.point;
             var shootOrigin = _gridView.PlayerBubbleContainer.position;
-            // var surfaceNormal = (tapWorldPos - towerTransform.position).normalized;
-            // var toPoint = shootOrigin - tapWorldPos;
-            // var projectedOrigin = shootOrigin - Vector3.Dot(toPoint, surfaceNormal) * surfaceNormal;
 
             if (!_gridService.TryGetFurthestFreeCell(shootOrigin, tapWorldPos, out shootIndex))
             {
@@ -46,6 +45,8 @@ namespace Game.Core.Level.Runtime
             
             _model.UsePlayerBubble();
             _model.SetState(LevelState.Shooting);
+            
+            _gridView.PlayShootEffect();
                 
             return true;
 
@@ -70,16 +71,22 @@ namespace Game.Core.Level.Runtime
                 var bombCluster = _gridService.GetNeighborsCluster(shootIndex);
                 _model.RemoveBubbles(bombCluster, false);
                 isSuccess = true;
+                
+                var effect = Object.Instantiate(_bubblesConfig.BubbleBoomEffect, _gridView.CellsContainer);
+                effect.transform.localPosition = _gridService.IndexToLocalPos(shootIndex);
             }
             
             var floatingBubbles = _gridService.GetFloatingBubbles();
-            _model.RemoveBubbles(floatingBubbles, true);
-
-            if (isSuccess)
+            
+            if (_model.HasBubble(shootIndex) && !_gridService.GetNeighborsCluster(shootIndex).Any())
             {
-                _signalBus.Fire<SuccessfullyShoot>();
+                floatingBubbles.Add(shootIndex);
             }
             
+            _model.RemoveBubbles(floatingBubbles, true);
+            
+            _signalBus.Fire(new ShotFinished(isSuccess));
+
             if (_model.Bubbles.Count == 0)
             {
                 _model.SetState(LevelState.Completed);

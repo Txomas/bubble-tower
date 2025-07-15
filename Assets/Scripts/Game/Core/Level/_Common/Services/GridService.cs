@@ -197,5 +197,11 @@ namespace Game.Core.Level
             var neighbors = GetNeighbors(index.x, index.y);
             return neighbors.Where(neighbor => _levelModel.HasBubble(neighbor));
         }
+        
+        public float GetMaxGridHeight()
+        {
+            return _levelModel.Bubbles.Select(bubble => bubble.Key.y).Prepend(0).Max() +
+                   _gridConfig.MaxAdditionalRows * HeightStep;
+        }
     }
 }

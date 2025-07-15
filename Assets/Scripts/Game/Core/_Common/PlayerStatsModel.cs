@@ -12,7 +12,8 @@ namespace Game.Core
         
         [field: SerializeField] public int Level { get; private set; }
         [field: SerializeField] public int Coins { get; private set; }
-        [field: SerializeField] public int Hearts { get; private set; }
+        // TODO: set value from controller
+        [field: SerializeField] public int Hearts { get; private set; } = 5;
         
         public void NextLevel()
         {

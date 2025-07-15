@@ -14,8 +14,8 @@ namespace Game.Core.Level.Runtime.Combo
 
         protected override void OnInitialized()
         {
-            Subscribe<SuccessfullyShoot>(OnSuccessfullyShoot);
-            _view.SetTextAlpha(0f);
+            Subscribe<ShotFinished>(OnShoot);
+            _view.gameObject.SetActive(false);
         }
 
         protected override void OnTick()
@@ -30,24 +30,32 @@ namespace Game.Core.Level.Runtime.Combo
             if (_config.ShouldResetCombo(timeSinceLastShoot))
             {
                 _model.ResetStreak();
-                _view.SetTextAlpha(0f);
+                _view.gameObject.SetActive(false);
             }
             else
             {
                 var lerpValue = _config.GetResetPercent(timeSinceLastShoot);
-                _view.SetTextAlpha(1 - lerpValue);
-                
                 var color = _config.GetStreakColor(_model.Streak);
+                color.a = 1 - lerpValue;
                 _view.SetTextColor(color);
             }
         }
 
-        private void OnSuccessfullyShoot(SuccessfullyShoot signal)
+        private void OnShoot(ShotFinished signal)
         {
-            // TODO: better to create new effect every time
-            _model.IncrementStreak();
-            _lastShootTime = Time.time;
-            _view.SetCurrentCombo(_model.Streak);
+            if (signal.IsSuccessful)
+            {
+                // TODO: better to create new effect every time
+                _model.IncrementStreak();
+                _lastShootTime = Time.time;
+                _view.SetCurrentCombo(_model.Streak);
+                _view.gameObject.SetActive(true);
+            }
+            else
+            {
+                _model.ResetStreak();
+                _view.gameObject.SetActive(false);
+            }
         }
     }
 }

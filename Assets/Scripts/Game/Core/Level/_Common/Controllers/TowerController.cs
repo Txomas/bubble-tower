@@ -14,7 +14,7 @@ namespace Game.Core.Level
 
         protected override void OnInitialized()
         {
-            var diameter = _gridConfig.Radius * 2f;
+            var diameter = _gridConfig.Radius * 2f - _gridConfig.CellSize * 0.5f;
             var height = _gridConfig.Rows * _gridConfig.HeightStep;
             _gridView.Tower.localScale = new Vector3(diameter, height, diameter);
             _gridView.Tower.position = new Vector3(0f, -height / 2f, 0f);

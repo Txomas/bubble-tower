@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Game.Popups
 {
-    [CreateAssetMenu(fileName = nameof(PopupsPrefabsRefs), menuName = ConfigsPaths.Game + nameof(PopupsPrefabsRefs))]
+    [CreateAssetMenu(fileName = nameof(PopupsPrefabsRefs), menuName = ConfigsPaths.AssetsRefs + nameof(PopupsPrefabsRefs))]
     public class PopupsPrefabsRefs : ScriptableObject, IValidatable
     {
         [SerializeField] private SerializedDictionary<PopupType, BasePopupView> _popupsByType;

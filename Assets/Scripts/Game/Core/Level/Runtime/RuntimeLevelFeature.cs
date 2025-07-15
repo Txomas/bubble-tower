@@ -23,7 +23,8 @@ namespace Game.Core.Level.Runtime
 
             DeclareSignal<PlayerBubblesChanged>();
             DeclareSignal<LevelStateChanged>();
-            DeclareSignal<SuccessfullyShoot>();
+            DeclareSignal<ShotFinished>();
+            DeclareSignal<LevelFinished>();
             
             ComboFeature.Install(Container);
         }

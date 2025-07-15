@@ -69,16 +69,13 @@ public class AsyncProcessor : ITickable
             var next = currentNode.Next;
             var worker = currentNode.Value;
             
-            if (worker.IsFinished)
-            {
-                _workers.Remove(currentNode);
-                currentNode = next;
-                continue;
-            }
-
             try
             {
-                worker.CoRoutine.Pump();
+                if (!worker.IsFinished)
+                {
+                    worker.CoRoutine.Pump();
+                }
+
                 worker.IsFinished = worker.CoRoutine.IsDone;
             }
             catch (Exception e)

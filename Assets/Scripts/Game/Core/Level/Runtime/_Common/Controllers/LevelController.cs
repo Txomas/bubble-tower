@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Game.Popups;
 using Game.Saving;
@@ -25,10 +26,15 @@ namespace Game.Core.Level.Runtime
             
             SetLevelControllersActive(false);
             
-            var levelData = _service.GetCurrentLevelData();
-            _model.SetData(levelData);
+            ResetData();
             
             Subscribe<LevelStateChanged>(OnLevelStateChanged);
+        }
+
+        private void ResetData()
+        {
+            var levelData = _service.GetCurrentLevelData();
+            _model.SetData(levelData);
         }
 
         public void StartLevel()
@@ -41,7 +47,7 @@ namespace Game.Core.Level.Runtime
         public void CompleteLevel()
         {
             _playerStatsModel.NextLevel();
-            SetLevelControllersActive(false);
+            FinishLevel();
         }
 
         public void FailLevel()
@@ -54,6 +60,10 @@ namespace Game.Core.Level.Runtime
         {
             SetLevelControllersActive(false);
             _savingService.Save(_playerStatsModel);
+            
+            FireSignal<LevelFinished>();
+            
+            ResetData();
             
             // TODO: show interstitial ad here
         }

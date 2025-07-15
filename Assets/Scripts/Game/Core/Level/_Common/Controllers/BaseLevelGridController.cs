@@ -26,7 +26,7 @@ namespace Game.Core.Level
             _view.BubbleAdded += AddBubble;
         }
         
-        protected void Rebuild()
+        protected virtual void Rebuild()
         {
             foreach (var bubble in _bubbles.Values)
             {
